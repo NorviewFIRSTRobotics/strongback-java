@@ -158,7 +158,7 @@ public class MockTalonSRX extends MockMotor implements TalonSRX {
     }
 
     @Override
-    public TalonSRX enableLimitSwitch(boolean forward, boolean reverse) {
+    public TalonSRX enableLimitSwitch(boolean enabled) {
         return this;
     }
 
@@ -188,41 +188,8 @@ public class MockTalonSRX extends MockMotor implements TalonSRX {
     }
 
     @Override
-    public MockTalonSRX clearStickyFaults() {
-        stickyFaults.reset();
-        return this;
-    }
-
-    @Override
     public long getFirmwareVersion() {
         return 0;
-    }
-
-    @Override
-    public boolean isSafetyEnabled() {
-        return safetyEnabled;
-    }
-
-    @Override
-    public TalonSRX setSafetyEnabled(boolean enabled) {
-        safetyEnabled = enabled;
-        return this;
-    }
-
-    @Override
-    public TalonSRX setExpiration(double timeout) {
-        expiration = timeout;
-        return this;
-    }
-
-    @Override
-    public double getExpiration() {
-        return expiration;
-    }
-
-    @Override
-    public boolean isAlive() {
-        return alive;
     }
 
     public MockTalonSRX setAlive( boolean alive ) {
@@ -255,10 +222,7 @@ public class MockTalonSRX extends MockMotor implements TalonSRX {
             reverseLimitSwitch = Fuse.instantaneous(()->triggerFault(sticky.reverseLimitSwitch));
             hardwareFailure = Fuse.instantaneous(()->triggerFault(sticky.hardwareFailure));
         }
-        @Override
-        public Fuse overTemperature() {
-            return overTemperature;
-        }
+
         @Override
         public Fuse underVoltage() {
             return underVoltage;
@@ -294,10 +258,6 @@ public class MockTalonSRX extends MockMotor implements TalonSRX {
         protected final MockSwitch reverseLimitSwitch = new MockSwitch().setNotTriggered();
         protected final MockSwitch hardwareFailure = new MockSwitch().setNotTriggered();
 
-        @Override
-        public Switch overTemperature() {
-            return overTemperature;
-        }
         @Override
         public Switch underVoltage() {
             return underVoltage;

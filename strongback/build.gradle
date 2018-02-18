@@ -1,19 +1,22 @@
 plugins {
   id "maven"
-  id "jaci.openrio.gradle.GradleRIO" version "2017.1.5"
-}
-
-wpi {
-  wpilibVersion = '2017.3.1'
+  id "maven-publish"
+  id "jaci.openrio.gradle.GradleRIO" version "2018.01.20"
 }
 
 dependencies {
   compile wpilib()
-  compile fileTree(dir: "${project.baseDir}/libs/ctre", include: '**/*.jar')
-  compile fileTree(dir: "${project.baseDir}/libs/navx-mxp", include: '**/*.jar')
+  compile ctre()
+  compile navx()
+  compile openrio.powerup.matchData()
   compile('io.dropwizard.metrics:metrics-core:3.1.0')
   compile('junit:junit:4.11')
 }
 
-compileJava.dependsOn(':download-navx')
-compileJava.dependsOn(':download-ctre')
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+    }
+  }
+}

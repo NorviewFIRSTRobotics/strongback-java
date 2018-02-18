@@ -1,3 +1,10 @@
+
+This is an unofficail fork of Strongback that merges most of the current PRs on the original project and is working to add what Team1793 needs to continue using it.  
+
+
+
+
+#Original ReadMe
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/strongback/strongback-cli/blob/master/LICENSE.txt)
 [![Build Status](https://travis-ci.org/strongback/strongback-java.svg?branch=master)](https://travis-ci.org/strongback/strongback-java)
 [![User chat](https://img.shields.io/badge/chat-users-brightgreen.svg)](https://gitter.im/strongback/users)

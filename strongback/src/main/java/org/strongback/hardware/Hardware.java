@@ -16,55 +16,21 @@
 
 package org.strongback.hardware;
 
+import com.ctre.CANTalon;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import org.strongback.annotation.Experimental;
-import org.strongback.components.Accelerometer;
-import org.strongback.components.AngleSensor;
-import org.strongback.components.DistanceSensor;
-import org.strongback.components.Gyroscope;
-import org.strongback.components.Motor;
-import org.strongback.components.PneumaticsModule;
-import org.strongback.components.PowerPanel;
+import org.strongback.components.*;
 import org.strongback.components.Relay;
 import org.strongback.components.Solenoid;
-import org.strongback.components.Switch;
-import org.strongback.components.TalonSRX;
-import org.strongback.components.ThreeAxisAccelerometer;
-import org.strongback.components.TwoAxisAccelerometer;
 import org.strongback.components.ui.FlightStick;
 import org.strongback.components.ui.Gamepad;
 import org.strongback.components.ui.InputDevice;
 import org.strongback.control.TalonController;
 import org.strongback.function.DoubleToDoubleFunction;
 import org.strongback.util.Values;
-
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.TalonControlMode;
-
-import edu.wpi.first.wpilibj.ADXL345_I2C;
-import edu.wpi.first.wpilibj.ADXL345_SPI;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.AnalogAccelerometer;
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.AnalogTrigger;
-import edu.wpi.first.wpilibj.BuiltInAccelerometer;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.Jaguar;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 /**
  * The factory methods that will create component implementations corresponding to physical hardware on the robot. Nested
@@ -152,8 +118,8 @@ public class Hardware {
          * Creates a new {@link AngleSensor} from an {@link Encoder} using the specified channels with the specified distance
          * per pulse.
          *
-         * @param aChannel the a channel of the encoder
-         * @param bChannel the b channel of the encoder
+         * @param aChannel         the a channel of the encoder
+         * @param bChannel         the b channel of the encoder
          * @param distancePerPulse the distance the end shaft spins per pulse
          * @return the angle sensor; never null
          */
@@ -177,9 +143,9 @@ public class Hardware {
          * arm would rotate 144 degrees. Therefore, the {@code fullVoltageRangeToInches} scale factor is
          * {@code 144 degrees / 5 V}, or {@code 28.8 degrees/volt}.
          *
-         * @param channel The analog channel this potentiometer is plugged into.
+         * @param channel                   The analog channel this potentiometer is plugged into.
          * @param fullVoltageRangeToDegrees The scaling factor multiplied by the analog voltage value to obtain the angle in
-         *        degrees.
+         *                                  degrees.
          * @return the angle sensor that uses the potentiometer on the given channel; never null
          */
         public static AngleSensor potentiometer(int channel, double fullVoltageRangeToDegrees) {
@@ -204,11 +170,11 @@ public class Hardware {
          * range (for example 30 degrees). In this case, the {@code offset} value of {@code 30} is determined from the
          * mechanical design.
          *
-         * @param channel The analog channel this potentiometer is plugged into.
+         * @param channel                   The analog channel this potentiometer is plugged into.
          * @param fullVoltageRangeToDegrees The scaling factor multiplied by the analog voltage value to obtain the angle in
-         *        degrees.
-         * @param offsetInDegrees The offset in degrees that the angle sensor will subtract from the underlying value before
-         *        returning the angle
+         *                                  degrees.
+         * @param offsetInDegrees           The offset in degrees that the angle sensor will subtract from the underlying value before
+         *                                  returning the angle
          * @return the angle sensor that uses the potentiometer on the given channel; never null
          */
         public static AngleSensor potentiometer(int channel, double fullVoltageRangeToDegrees, double offsetInDegrees) {
@@ -224,7 +190,7 @@ public class Hardware {
         /**
          * Create a new {@link ThreeAxisAccelerometer} for the ADXL345 with the desired range using the specified I2C port.
          *
-         * @param port the I2C port used by the accelerometer
+         * @param port  the I2C port used by the accelerometer
          * @param range the desired range of the accelerometer
          * @return the accelerometer; never null
          */
@@ -238,7 +204,7 @@ public class Hardware {
         /**
          * Create a new {@link ThreeAxisAccelerometer} for the ADXL345 with the desired range using the specified SPI port.
          *
-         * @param port the SPI port used by the accelerometer
+         * @param port  the SPI port used by the accelerometer
          * @param range the desired range of the accelerometer
          * @return the accelerometer; never null
          */
@@ -263,9 +229,9 @@ public class Hardware {
          * Create a new single-axis {@link Accelerometer} using the {@link AnalogAccelerometer} on the specified channel, with
          * has the given sensitivity and zero value.
          *
-         * @param channel the channel for the analog accelerometer
-         * @param sensitivity the desired sensitivity in Volts per G (depends on actual hardware, such as 18mV/g or
-         *        {@code 0.018} for ADXL193)
+         * @param channel          the channel for the analog accelerometer
+         * @param sensitivity      the desired sensitivity in Volts per G (depends on actual hardware, such as 18mV/g or
+         *                         {@code 0.018} for ADXL193)
          * @param zeroValueInVolts the voltage that represents no acceleration (should be determine experimentally)
          * @return the accelerometer; never null
          */
@@ -280,15 +246,15 @@ public class Hardware {
          * Create a new single-axis {@link Accelerometer} using two {@link AnalogAccelerometer}s on the specified channels, with
          * each have the given sensitivity and zero value.
          *
-         * @param xAxisChannel the channel for the X-axis analog accelerometer
-         * @param yAxisChannel the channel for the Y-axis analog accelerometer
-         * @param sensitivity the desired sensitivity in Volts per G (depends on actual hardware, such as 18mV/g or
-         *        {@code 0.018} for ADXL193)
+         * @param xAxisChannel     the channel for the X-axis analog accelerometer
+         * @param yAxisChannel     the channel for the Y-axis analog accelerometer
+         * @param sensitivity      the desired sensitivity in Volts per G (depends on actual hardware, such as 18mV/g or
+         *                         {@code 0.018} for ADXL193)
          * @param zeroValueInVolts the voltage that represents no acceleration (should be determine experimentally)
          * @return the accelerometer; never null
          */
         public static TwoAxisAccelerometer analogAccelerometer(int xAxisChannel, int yAxisChannel, double sensitivity,
-                double zeroValueInVolts) {
+                                                               double zeroValueInVolts) {
             if (xAxisChannel == yAxisChannel) throw new IllegalArgumentException(
                     "The x- and y-axis channels may not be the same");
             Accelerometer xAxis = analogAccelerometer(xAxisChannel, sensitivity, zeroValueInVolts);
@@ -369,15 +335,15 @@ public class Hardware {
          * Create an analog switch sensor that is triggered when the value exceeds the specified upper voltage and that is no
          * longer triggered when the value drops below the specified lower voltage.
          *
-         * @param channel the port to use for the analog trigger 0-3 are on-board, 4-7 are on the MXP port
+         * @param channel      the port to use for the analog trigger 0-3 are on-board, 4-7 are on the MXP port
          * @param lowerVoltage the lower voltage limit that below which will result in the switch no longer being triggered
          * @param upperVoltage the upper voltage limit that above which will result in triggering the switch
-         * @param option the trigger option; may not be null
-         * @param mode the trigger mode; may not be null
+         * @param option       the trigger option; may not be null
+         * @param mode         the trigger mode; may not be null
          * @return the analog switch; never null
          */
         public static Switch analog(int channel, double lowerVoltage, double upperVoltage, AnalogOption option,
-                TriggerMode mode) {
+                                    TriggerMode mode) {
             if (option == null) throw new IllegalArgumentException("The analog option must be specified");
             if (mode == null) throw new IllegalArgumentException("The analog mode must be specified");
             AnalogTrigger trigger = new AnalogTrigger(channel);
@@ -416,7 +382,7 @@ public class Hardware {
         /**
          * Create an analog {@link DistanceSensor} for an {@link AnalogInput} sensor using the specified channel.
          *
-         * @param channel the channel the sensor is connected to
+         * @param channel       the channel the sensor is connected to
          * @param voltsToInches the conversion from analog volts to inches
          * @return a {@link DistanceSensor} linked to the specified channel
          */
@@ -439,7 +405,7 @@ public class Hardware {
          * 270 degrees over the 0V-5V range while the end of the arm travels 20 inches. Therefore, the
          * {@code fullVoltageRangeToInches} scale factor is {@code 20 inches / 5 V}, or {@code 4 inches/volt}.
          *
-         * @param channel The analog channel this potentiometer is plugged into.
+         * @param channel                  The analog channel this potentiometer is plugged into.
          * @param fullVoltageRangeToInches The scaling factor multiplied by the analog voltage value to obtain inches.
          * @return the distance sensor that uses the potentiometer on the given channel; never null
          */
@@ -465,10 +431,10 @@ public class Hardware {
          * range (for example 10 degrees). In this case, the {@code offset} value is measured from the physical mechanical
          * design and can be specified to automatically remove the 10 degrees from the potentiometer output.
          *
-         * @param channel The analog channel this potentiometer is plugged into.
+         * @param channel                  The analog channel this potentiometer is plugged into.
          * @param fullVoltageRangeToInches The scaling factor multiplied by the analog voltage value to obtain inches.
-         * @param offsetInInches The offset in inches that the distance sensor will subtract from the underlying value before
-         *        returning the distance
+         * @param offsetInInches           The offset in inches that the distance sensor will subtract from the underlying value before
+         *                                 returning the distance
          * @return the distance sensor that uses the potentiometer on the given channel; never null
          */
         public static DistanceSensor potentiometer(int channel, double fullVoltageRangeToInches, double offsetInInches) {
@@ -498,7 +464,7 @@ public class Hardware {
         /**
          * Create a motor driven by a Talon speed controller on the specified channel, with a custom speed limiting function.
          *
-         * @param channel the channel the controller is connected to
+         * @param channel      the channel the controller is connected to
          * @param speedLimiter function that will be used to limit the speed; may not be null
          * @return a motor on the specified channel
          */
@@ -520,7 +486,7 @@ public class Hardware {
         /**
          * Create a motor driven by a Jaguar speed controller on the specified channel, with a custom speed limiting function
          *
-         * @param channel the channel the controller is connected to
+         * @param channel      the channel the controller is connected to
          * @param speedLimiter function that will be used to limit the speed; may not be null
          * @return a motor on the specified channel
          */
@@ -542,7 +508,7 @@ public class Hardware {
         /**
          * Create a motor driven by a Victor speed controller on the specified channel, with a custom speed limiting function
          *
-         * @param channel the channel the controller is connected to
+         * @param channel      the channel the controller is connected to
          * @param speedLimiter function that will be used to limit the speed (input voltage); may not be null
          * @return a motor on the specified channel
          */
@@ -565,7 +531,7 @@ public class Hardware {
          * Create a motor driven by a VEX Robotics Victor SP speed controller on the specified channel, with a custom speed
          * limiting function.
          *
-         * @param channel the channel the controller is connected to
+         * @param channel      the channel the controller is connected to
          * @param speedLimiter function that will be used to limit the speed (input voltage); may not be null
          * @return a motor on the specified channel
          */
@@ -594,7 +560,7 @@ public class Hardware {
          * <code>pulsesPerDegree</code> is non-zero. But the resulting {@link TalonSRX} will always have a null
          * {@link TalonSRX#getAnalogInput()}.
          *
-         * @param deviceNumber the CAN device number for the Talon SRX; may not be null
+         * @param deviceNumber    the CAN device number for the Talon SRX; may not be null
          * @param pulsesPerDegree the number of encoder pulses per degree of revolution of the final shaft; may be 0 if unused
          * @return a {@link TalonSRX} motor; never null
          */
@@ -611,15 +577,15 @@ public class Hardware {
          * <code>pulsesPerDegree</code> is non-zero. Likewise, the resulting {@link TalonSRX} will have a non-null
          * {@link TalonSRX#getAnalogInput()} when the <code>analogTurnsOverVoltageRange</code> is non-zero.
          *
-         * @param deviceNumber the CAN device number for the Talon SRX; may not be null
-         * @param pulsesPerDegree the number of encoder pulses per degree of revolution of the final shaft; may be 0 if unused
+         * @param deviceNumber                the CAN device number for the Talon SRX; may not be null
+         * @param pulsesPerDegree             the number of encoder pulses per degree of revolution of the final shaft; may be 0 if unused
          * @param analogTurnsOverVoltageRange the number of turns of an analog pot or analog encoder over the 0-3.3V range; may
-         *        be 0 if unused
+         *                                    be 0 if unused
          * @return a {@link TalonSRX} motor; never null
          */
         @Experimental
         public static TalonSRX talonSRX(int deviceNumber, double pulsesPerDegree, double analogTurnsOverVoltageRange) {
-            CANTalon talon = new CANTalon(deviceNumber);
+            com.ctre.phoenix.motorcontrol.can.TalonSRX talon = new com.ctre.phoenix.motorcontrol.can.TalonSRX(deviceNumber);
             return talonSRX(talon, pulsesPerDegree, analogTurnsOverVoltageRange);
         }
 
@@ -633,7 +599,7 @@ public class Hardware {
          * @param talon the already configured {@link CANTalon} instance; may not be null
          * @return a {@link TalonSRX} motor; never null
          */
-        public static TalonSRX talonSRX(CANTalon talon) {
+        public static TalonSRX talonSRX(com.ctre.phoenix.motorcontrol.can.TalonSRX talon) {
             return talonSRX(talon, 0.0, 0.0d);
         }
 
@@ -645,12 +611,12 @@ public class Hardware {
          * <code>pulsesPerDegree</code> is non-zero. But the resulting {@link TalonSRX} will always have a null
          * {@link TalonSRX#getAnalogInput()}.
          *
-         * @param talon the already configured {@link CANTalon} instance; may not be null
+         * @param talon           the already configured {@link CANTalon} instance; may not be null
          * @param pulsesPerDegree the number of encoder pulses per degree of revolution of the final shaft
          * @return a {@link TalonSRX} motor; never null
          */
         @Experimental
-        public static TalonSRX talonSRX(CANTalon talon, double pulsesPerDegree) {
+        public static TalonSRX talonSRX(com.ctre.phoenix.motorcontrol.can.TalonSRX talon, double pulsesPerDegree) {
             return talonSRX(talon, pulsesPerDegree, 0.0d);
         }
 
@@ -663,14 +629,14 @@ public class Hardware {
          * <code>pulsesPerDegree</code> is non-zero. Likewise, the resulting {@link TalonSRX} will have a non-null
          * {@link TalonSRX#getAnalogInput()} when the <code>analogTurnsOverVoltageRange</code> is non-zero.
          *
-         * @param talon the already configured {@link CANTalon} instance; may not be null
-         * @param pulsesPerDegree the number of encoder pulses per degree of revolution of the final shaft
+         * @param talon                       the already configured {@link CANTalon} instance; may not be null
+         * @param pulsesPerDegree             the number of encoder pulses per degree of revolution of the final shaft
          * @param analogTurnsOverVoltageRange the number of turns of an analog pot or analog encoder over the 0-3.3V range; may
-         *        be 0 if unused
+         *                                    be 0 if unused
          * @return a {@link TalonSRX} motor; never null
          */
         @Experimental
-        public static TalonSRX talonSRX(CANTalon talon, double pulsesPerDegree, double analogTurnsOverVoltageRange) {
+        public static TalonSRX talonSRX(com.ctre.phoenix.motorcontrol.can.TalonSRX talon, double pulsesPerDegree, double analogTurnsOverVoltageRange) {
             if (talon == null) throw new IllegalArgumentException("The CANTalon reference may not be null");
             return new HardwareTalonSRX(talon, pulsesPerDegree, analogTurnsOverVoltageRange);
         }
@@ -680,17 +646,16 @@ public class Hardware {
          * a {@link TalonSRX#getAnalogInput()} or a {@link TalonSRX#getEncoderInput()}.
          *
          * @param deviceNumber the CAN device number for the Talon SRX; may not be null
-         * @param leader the Talon SRX that is to be followed; may not be null
-         * @param reverse <code>true</code> if the resulting Talon should have inverted output compared to the leader, or
-         *        <code>false</code> if the output should exactly match the leader
+         * @param leader       the Talon SRX that is to be followed; may not be null
+         * @param reverse      <code>true</code> if the resulting Talon should have inverted output compared to the leader, or
+         *                     <code>false</code> if the output should exactly match the leader
          * @return a {@link TalonSRX} motor controller that follows the leader; never null
          */
         public static TalonSRX talonSRX(int deviceNumber, TalonSRX leader, boolean reverse) {
-            CANTalon talon = new CANTalon(deviceNumber);
-            talon.changeControlMode(TalonControlMode.Follower);
-            talon.set(leader.getDeviceID());
-            talon.reverseOutput(reverse);
-            return talonSRX(talon, 0.0d, 0.0d);
+            com.ctre.phoenix.motorcontrol.can.TalonSRX talonSRX = new com.ctre.phoenix.motorcontrol.can.TalonSRX(deviceNumber);
+            talonSRX.set(ControlMode.Follower,leader.getDeviceID());
+            talonSRX.setInverted(reverse);
+            return talonSRX(talonSRX, 0.0d, 0.0d);
         }
 
         /**
@@ -708,60 +673,12 @@ public class Hardware {
          * Create a motor driven by a <a href="http://www.revrobotics.com/SPARK">RevRobotics Spark Motor Controller</a> on the
          * specified channel, with a custom speed limiting function.
          *
-         * @param channel the channel the controller is connected to
+         * @param channel      the channel the controller is connected to
          * @param speedLimiter function that will be used to limit the speed (input voltage); may not be null
          * @return a motor on the specified channel
          */
         public static Motor spark(int channel, DoubleToDoubleFunction speedLimiter) {
             return new HardwareSpark(new Spark(channel), SPEED_LIMITER);
-        }
-    }
-
-    /**
-     * Factory method for hardware-based controllers.
-     */
-    public static final class Controllers {
-
-        /**
-         * Create a component that manages and uses the hardware-based PID controller on the Talon SRX with a quadrature encoder
-         * and/or an analog 3.3V input sensor wired into the Talon.
-         * <p>
-         * The resulting {@link TalonSRX} will have a non-null {@link TalonSRX#getEncoderInput()} when the
-         * <code>pulsesPerDegree</code> is non-zero. Likewise, the resulting {@link TalonSRX} will have a non-null
-         * {@link TalonSRX#getAnalogInput()} when the <code>analogTurnsOverVoltageRange</code> is non-zero.
-         *
-         * @param deviceNumber the CAN device number; may not be null
-         * @param pulsesPerDegree the number of encoder pulses per degree of revolution of the final shaft
-         * @param analogTurnsOverVoltageRange the number of turns of an analog pot or analog encoder over the 0-3.3V range; may
-         *        be 0 if unused
-         * @return the interface for managing and using the Talon SRX hardware-based PID controller; never null
-         */
-        @Experimental
-        public static TalonController talonController(int deviceNumber, double pulsesPerDegree,
-                double analogTurnsOverVoltageRange) {
-            CANTalon talon = new CANTalon(deviceNumber);
-            HardwareTalonController c = new HardwareTalonController(talon, pulsesPerDegree, analogTurnsOverVoltageRange);
-            return c;
-        }
-
-        /**
-         * Create a component that manages and uses the hardware-based PID controller on the Talon SRX with a quadrature encoder
-         * and/or an analog 3.3V input sensor wired into the Talon.
-         * <p>
-         * The resulting {@link TalonSRX} will have a non-null {@link TalonSRX#getEncoderInput()} when the
-         * <code>pulsesPerDegree</code> is non-zero. Likewise, the resulting {@link TalonSRX} will have a non-null
-         * {@link TalonSRX#getAnalogInput()} when the <code>analogTurnsOverVoltageRange</code> is non-zero.
-         *
-         * @param talon the already configured {@link CANTalon} instance; may not be null
-         * @param pulsesPerDegree the number of encoder pulses per degree of revolution of the final shaft
-         * @param analogTurnsOverVoltageRange the number of turns of an analog pot or analog encoder over the 0-3.3V range; may
-         *        be 0 if unused
-         * @return the interface for managing and using the Talon SRX hardware-based PID controller; never null
-         */
-        @Experimental
-        public static TalonController talonController(CANTalon talon, double pulsesPerDegree,
-                double analogTurnsOverVoltageRange) {
-            return new HardwareTalonController(talon, pulsesPerDegree, analogTurnsOverVoltageRange);
         }
     }
 
@@ -772,8 +689,8 @@ public class Hardware {
         /**
          * Create a double-acting solenoid that uses the specified channels on the default module.
          *
-         * @param extendChannel the channel that extends the solenoid
-         * @param retractChannel the channel that retracts the solenoid
+         * @param extendChannel    the channel that extends the solenoid
+         * @param retractChannel   the channel that retracts the solenoid
          * @param initialDirection the initial direction for the solenoid; may not be null
          * @return a solenoid on the specified channels; never null
          */
@@ -785,14 +702,14 @@ public class Hardware {
         /**
          * Create a double-acting solenoid that uses the specified channels on the given module.
          *
-         * @param module the module for the channels
-         * @param extendChannel the channel that extends the solenoid
-         * @param retractChannel the channel that retracts the solenoid
+         * @param module           the module for the channels
+         * @param extendChannel    the channel that extends the solenoid
+         * @param retractChannel   the channel that retracts the solenoid
          * @param initialDirection the initial direction for the solenoid; may not be null
          * @return a solenoid on the specified channels; never null
          */
         public static Solenoid doubleSolenoid(int module, int extendChannel, int retractChannel,
-                Solenoid.Direction initialDirection) {
+                                              Solenoid.Direction initialDirection) {
             DoubleSolenoid solenoid = new DoubleSolenoid(module, extendChannel, retractChannel);
             return new HardwareDoubleSolenoid(solenoid, initialDirection);
         }
@@ -837,14 +754,14 @@ public class Hardware {
             Joystick joystick = new Joystick(port);
             verifyJoystickConnected(joystick);
             return FlightStick.create(joystick::getRawAxis,
-                                      joystick::getRawButton,
-                                      joystick::getPOV,
-                                      joystick::getY, // pitch
-                                      () -> joystick.getTwist() * -1, // yaw is reversed
-                                      joystick::getX, // roll
-                                      joystick::getThrottle, // throttle
-                                      () -> joystick.getRawButton(1), // trigger
-                                      () -> joystick.getRawButton(2)); // thumb
+                    joystick::getRawButton,
+                    joystick::getPOV,
+                    joystick::getY, // pitch
+                    () -> joystick.getTwist() * -1, // yaw is reversed
+                    joystick::getX, // roll
+                    joystick::getThrottle, // throttle
+                    () -> joystick.getRawButton(1), // trigger
+                    () -> joystick.getRawButton(2)); // thumb
         }
 
         /**
@@ -857,14 +774,14 @@ public class Hardware {
             Joystick joystick = new Joystick(port);
             verifyJoystickConnected(joystick);
             return FlightStick.create(joystick::getRawAxis,
-                                      joystick::getRawButton,
-                                      joystick::getPOV,
-                                      joystick::getY, // pitch
-                                      joystick::getTwist, // yaw
-                                      joystick::getX, // roll
-                                      joystick::getThrottle, // flapper thing on bottom
-                                      () -> joystick.getRawButton(1), // trigger
-                                      () -> joystick.getRawButton(2)); // thumb
+                    joystick::getRawButton,
+                    joystick::getPOV,
+                    joystick::getY, // pitch
+                    joystick::getTwist, // yaw
+                    joystick::getX, // roll
+                    joystick::getThrottle, // flapper thing on bottom
+                    () -> joystick.getRawButton(1), // trigger
+                    () -> joystick.getRawButton(2)); // thumb
         }
 
         /**
@@ -877,14 +794,14 @@ public class Hardware {
             Joystick joystick = new Joystick(port);
             verifyJoystickConnected(joystick);
             return FlightStick.create(joystick::getRawAxis,
-                                      joystick::getRawButton,
-                                      joystick::getPOV,
-                                      () -> joystick.getY() * -1, // pitch is reversed
-                                      joystick::getTwist, // yaw
-                                      joystick::getX, // roll
-                                      joystick::getThrottle, // throttle
-                                      () -> joystick.getRawButton(1), // trigger
-                                      () -> joystick.getRawButton(2)); // thumb
+                    joystick::getRawButton,
+                    joystick::getPOV,
+                    () -> joystick.getY() * -1, // pitch is reversed
+                    joystick::getTwist, // yaw
+                    joystick::getX, // roll
+                    joystick::getThrottle, // throttle
+                    () -> joystick.getRawButton(1), // trigger
+                    () -> joystick.getRawButton(2)); // thumb
         }
 
         /**
@@ -897,24 +814,25 @@ public class Hardware {
             Joystick joystick = new Joystick(port);
             verifyJoystickConnected(joystick);
             return Gamepad.create(joystick::getRawAxis,
-                                  joystick::getRawButton,
-                                  joystick::getPOV,
-                                  () -> joystick.getRawAxis(0),
-                                  () -> joystick.getRawAxis(1) * -1,
-                                  () -> joystick.getRawAxis(2),
-                                  () -> joystick.getRawAxis(3) * -1,
-                                  () -> joystick.getRawButton(6) ? 1.0 : 0.0,
-                                  () -> joystick.getRawButton(7) ? 1.0 : 0.0,
-                                  () -> joystick.getRawButton(4),
-                                  () -> joystick.getRawButton(5),
-                                  () -> joystick.getRawButton(1),
-                                  () -> joystick.getRawButton(2),
-                                  () -> joystick.getRawButton(0),
-                                  () -> joystick.getRawButton(3),
-                                  () -> joystick.getRawButton(9),
-                                  () -> joystick.getRawButton(8),
-                                  () -> joystick.getRawButton(10),
-                                  () -> joystick.getRawButton(11));
+                    joystick::getRawButton,
+                    joystick::getPOV,
+                    () -> joystick.getRawAxis(0),
+                    () -> joystick.getRawAxis(1) * -1,
+                    () -> joystick.getRawAxis(2),
+                    () -> joystick.getRawAxis(3) * -1,
+                    () -> joystick.getRawButton(6) ? 1.0 : 0.0,
+                    () -> joystick.getRawButton(7) ? 1.0 : 0.0,
+                    () -> joystick.getRawButton(4),
+                    () -> joystick.getRawButton(5),
+                    () -> joystick.getRawButton(1),
+                    () -> joystick.getRawButton(2),
+                    () -> joystick.getRawButton(0),
+                    () -> joystick.getRawButton(3),
+                    () -> joystick.getRawButton(9),
+                    () -> joystick.getRawButton(8),
+                    () -> joystick.getRawButton(10),
+                    () -> joystick.getRawButton(11),
+                    joystick::setRumble);
         }
 
         /**
@@ -927,24 +845,26 @@ public class Hardware {
             Joystick joystick = new Joystick(port);
             verifyJoystickConnected(joystick);
             return Gamepad.create(joystick::getRawAxis,
-                                  joystick::getRawButton,
-                                  joystick::getPOV,
-                                  () -> joystick.getRawAxis(0),
-                                  () -> joystick.getRawAxis(1) * -1,
-                                  () -> joystick.getRawAxis(4),
-                                  () -> joystick.getRawAxis(5) * -1,
-                                  () -> joystick.getRawAxis(2),
-                                  () -> joystick.getRawAxis(3),
-                                  () -> joystick.getRawButton(4),
-                                  () -> joystick.getRawButton(5),
-                                  () -> joystick.getRawButton(0),
-                                  () -> joystick.getRawButton(1),
-                                  () -> joystick.getRawButton(2),
-                                  () -> joystick.getRawButton(3),
-                                  () -> joystick.getRawButton(7),
-                                  () -> joystick.getRawButton(6),
-                                  () -> joystick.getRawButton(8),
-                                  () -> joystick.getRawButton(9));
+                    joystick::getRawButton,
+                    joystick::getPOV,
+                    () -> joystick.getRawAxis(0),
+                    () -> joystick.getRawAxis(1) * -1,
+                    () -> joystick.getRawAxis(4),
+                    () -> joystick.getRawAxis(5) * -1,
+                    () -> joystick.getRawAxis(2),
+                    () -> joystick.getRawAxis(3),
+                    () -> joystick.getRawButton(4),
+                    () -> joystick.getRawButton(5),
+                    () -> joystick.getRawButton(0),
+                    () -> joystick.getRawButton(1),
+                    () -> joystick.getRawButton(2),
+                    () -> joystick.getRawButton(3),
+                    () -> joystick.getRawButton(7),
+                    () -> joystick.getRawButton(6),
+                    () -> joystick.getRawButton(8),
+                    () -> joystick.getRawButton(9),
+                    joystick::setRumble
+            );
         }
 
         /**
@@ -957,24 +877,25 @@ public class Hardware {
             Joystick joystick = new Joystick(port);
             verifyJoystickConnected(joystick);
             return Gamepad.create(joystick::getRawAxis,
-                                  joystick::getRawButton,
-                                  joystick::getPOV,
-                                  () -> joystick.getRawAxis(0),
-                                  () -> joystick.getRawAxis(1) * -1,
-                                  () -> joystick.getRawAxis(4),
-                                  () -> joystick.getRawAxis(5) * -1,
-                                  () -> joystick.getRawAxis(2),
-                                  () -> joystick.getRawAxis(3),
-                                  () -> joystick.getRawButton(5),
-                                  () -> joystick.getRawButton(6),
-                                  () -> joystick.getRawButton(1),
-                                  () -> joystick.getRawButton(2),
-                                  () -> joystick.getRawButton(3),
-                                  () -> joystick.getRawButton(4),
-                                  () -> joystick.getRawButton(8),
-                                  () -> joystick.getRawButton(7),
-                                  () -> joystick.getRawButton(9),
-                                  () -> joystick.getRawButton(10));
+                    joystick::getRawButton,
+                    joystick::getPOV,
+                    () -> joystick.getRawAxis(0),
+                    () -> joystick.getRawAxis(1) * -1,
+                    () -> joystick.getRawAxis(4),
+                    () -> joystick.getRawAxis(5) * -1,
+                    () -> joystick.getRawAxis(2),
+                    () -> joystick.getRawAxis(3),
+                    () -> joystick.getRawButton(5),
+                    () -> joystick.getRawButton(6),
+                    () -> joystick.getRawButton(1),
+                    () -> joystick.getRawButton(2),
+                    () -> joystick.getRawButton(3),
+                    () -> joystick.getRawButton(4),
+                    () -> joystick.getRawButton(8),
+                    () -> joystick.getRawButton(7),
+                    () -> joystick.getRawButton(9),
+                    () -> joystick.getRawButton(10),
+                    joystick::setRumble);
         }
     }
 }

@@ -16,6 +16,13 @@
 
 package org.strongback.control;
 
+import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
+import edu.wpi.first.wpilibj.tables.ITable;
+import edu.wpi.first.wpilibj.tables.ITableListener;
+import org.strongback.*;
+import org.strongback.annotation.Immutable;
+import org.strongback.annotation.ThreadSafe;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -25,18 +32,6 @@ import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
-
-import org.strongback.DataRecordable;
-import org.strongback.DataRecorder;
-import org.strongback.Executable;
-import org.strongback.Executor;
-import org.strongback.Strongback;
-import org.strongback.annotation.Immutable;
-import org.strongback.annotation.ThreadSafe;
-
-import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
-import edu.wpi.first.wpilibj.tables.ITable;
-import edu.wpi.first.wpilibj.tables.ITableListener;
 
 /**
  * A software-only Proportional Integral Differential (PID) controller with optional support for feed forward. The source of
@@ -715,36 +710,36 @@ public class SoftwarePIDController implements LiveWindowSendable, PIDController 
             }
         }
     }
+//
+//    @Override
+//    public synchronized void initTable(ITable subtable) {
+//        if (this.table != null) {
+//            this.table.removeTableListener(listener);
+//        }
+//        this.table = subtable;
+//        if (table != null) {
+//            Gains gains = this.gains;
+//            Target target = this.target;
+//            table.putNumber("p", gains.p);
+//            table.putNumber("i", gains.i);
+//            table.putNumber("d", gains.d);
+//            table.putNumber("f", gains.feedForward);
+//            table.putNumber("setpoint", target.setpoint);
+//            table.putBoolean("enabled", isEnabled());
+//            table.putNumber("profile", getCurrentProfile());
+//            table.addTableListener(listener, false);
+//        }
+//    }
 
-    @Override
-    public synchronized void initTable(ITable subtable) {
-        if (this.table != null) {
-            this.table.removeTableListener(listener);
-        }
-        this.table = subtable;
-        if (table != null) {
-            Gains gains = this.gains;
-            Target target = this.target;
-            table.putNumber("p", gains.p);
-            table.putNumber("i", gains.i);
-            table.putNumber("d", gains.d);
-            table.putNumber("f", gains.feedForward);
-            table.putNumber("setpoint", target.setpoint);
-            table.putBoolean("enabled", isEnabled());
-            table.putNumber("profile", getCurrentProfile());
-            table.addTableListener(listener, false);
-        }
-    }
-
-    @Override
-    public String getSmartDashboardType() {
-        return "PIDController";
-    }
-
-    @Override
-    public ITable getTable() {
-        return table;
-    }
+//    @Override
+//    public String getSmartDashboardType() {
+//        return "PIDController";
+//    }
+//
+//    @Override
+//    public ITable getTable() {
+//        return table;
+//    }
 
     @Override
     public void startLiveWindowMode() {

@@ -77,7 +77,7 @@ public interface TalonSRX extends LimitedMotor {
      * Get the input angle and rate of the current {@link #setFeedbackDevice(FeedbackDevice) feedback device}.
      *
      * @return the selected input device sensor; never null, but it may return a meaningless value if a sensor is not physically
-     *         wired as an input to the Talon device
+     * wired as an input to the Talon device
      */
     public Gyroscope getSelectedSensor();
 
@@ -121,7 +121,7 @@ public interface TalonSRX extends LimitedMotor {
     /**
      * Set the status frame rate for this controller.
      *
-     * @param frameRate the status frame rate; may not be null
+     * @param frameRate    the status frame rate; may not be null
      * @param periodMillis frame rate period in milliseconds
      * @return this object so that methods can be chained; never null
      */
@@ -151,7 +151,7 @@ public interface TalonSRX extends LimitedMotor {
      * for this feature to take effect.
      *
      * @param forwardLimitInDegrees the angle at which the forward throttle should be disabled, where the angle in terms of the
-     *        {@link #getSelectedSensor()}
+     *                              {@link #getSelectedSensor()}
      * @return this object so that methods can be chained; never null
      * @see #enableForwardSoftLimit(boolean)
      */
@@ -169,7 +169,7 @@ public interface TalonSRX extends LimitedMotor {
      * for this feature to take effect.
      *
      * @param reverseLimitInDegrees the angle at which the reverse throttle should be disabled, where the angle in terms of the
-     *        {@link #getSelectedSensor()}
+     *                              {@link #getSelectedSensor()}
      * @return this object so that methods can be chained; never null
      * @see #enableForwardSoftLimit(boolean)
      */
@@ -196,16 +196,15 @@ public interface TalonSRX extends LimitedMotor {
     /**
      * Enable the forward and reverse limit switches.
      *
-     * @param forward <code>true</code> if the forward limit is to be enabled, or <code>false</code> otherwise
-     * @param reverse <code>true</code> if the reverse limit is to be enabled, or <code>false</code> otherwise
+     * @param enabled <code>true</code> if the reverse limit is to be enabled, or <code>false</code> otherwise
      * @return this object so that methods can be chained; never null
      */
-    public TalonSRX enableLimitSwitch(boolean forward, boolean reverse);
+    public TalonSRX enableLimitSwitch(boolean enabled);
 
     /**
      * Configure the forward limit switch to be normally open or normally closed. Talon will disable momentarily if the Talon's
      * current setting is dissimilar to the caller's requested setting.
-     *
+     * <p>
      * Since Talon saves setting to flash this should only affect a given Talon initially during robot install.
      *
      * @param normallyOpen <code>true</code> for normally open, or <code>false</code> for normally closed.
@@ -216,7 +215,7 @@ public interface TalonSRX extends LimitedMotor {
     /**
      * Configure the reverse limit switch to be normally open or normally closed. Talon will disable momentarily if the Talon's
      * current setting is dissimilar to the caller's requested setting.
-     *
+     * <p>
      * Since Talon saves setting to flash this should only affect a given Talon initially during robot install.
      *
      * @param normallyOpen <code>true</code> for normally open, or <code>false</code> for normally closed.
@@ -262,13 +261,6 @@ public interface TalonSRX extends LimitedMotor {
     public Faults stickyFaults();
 
     /**
-     * Clear all {@link #stickyFaults() sticky faults} that may have been triggered.
-     *
-     * @return this instance so that methods can be chained; never null
-     */
-    public TalonSRX clearStickyFaults();
-
-    /**
      * Get the firmware version.
      *
      * @return the version of the firmware running on the Talon
@@ -276,53 +268,10 @@ public interface TalonSRX extends LimitedMotor {
     public long getFirmwareVersion();
 
     /**
-     * Determine whether this motor controller's safety mode is enabled.
-     *
-     * @return <code>true</code> if the motor will be automatically disabled if it is not used within the expiration time, or
-     *         <code>false</code> otherwise
-     */
-    public boolean isSafetyEnabled();
-
-    /**
-     * Set whether this motor controller's safety mode is enabled.
-     *
-     * @param enabled <code>true</code> if the motor will be automatically disabled if it is not used within the expiration
-     *        time, or <code>false</code> otherwise
-     * @return this instance so that methods can be chained; never null
-     */
-    public TalonSRX setSafetyEnabled(boolean enabled);
-
-    /**
-     * Get the motor safety expiration time in milliseconds. When {@link #isSafetyEnabled() safety is enabled}, then the motor
-     * will be automatically disabled if it is not used within the expiration time, which is typically 100ms. This can be
-     * adjusted to a larger value when debugging the robot.
-     *
-     * @return the safety expiration time in milliseconds
-     */
-    public double getExpiration();
-
-    /**
-     * Set the motor safety expiration time in milliseconds. When {@link #isSafetyEnabled() safety is enabled}, then the motor
-     * will be automatically disabled if it is not used within the expiration time, which is typically 100ms. This can be
-     * adjusted to a larger value when debugging the robot.
-     *
-     * @param timeout the safety expiration time in milliseconds
-     * @return this instance so that methods can be chained; never null
-     */
-    public TalonSRX setExpiration(double timeout);
-
-    /**
-     * Determine if this motor controller is alive or has been disabled because it has not been used within the
-     * {@link #getExpiration() expiration}.
-     *
-     * @return <code>true</code> if the controller is alive, or <code>false</code> if it has been disabled after expiring.
-     */
-    public boolean isAlive();
-
-    /**
      * The type of feedback sensor used by this Talon controller.
      */
     public enum FeedbackDevice {
+        NONE(-1),
         /**
          * Use Quadrature Encoder.
          */
@@ -469,17 +418,88 @@ public interface TalonSRX extends LimitedMotor {
         }
     }
 
+    public static class StickyFaultsWrapper implements Faults {
+        private com.ctre.phoenix.motorcontrol.StickyFaults faults;
+
+        public StickyFaultsWrapper(com.ctre.phoenix.motorcontrol.can.TalonSRX talonSRX) {
+            this.faults = new com.ctre.phoenix.motorcontrol.StickyFaults();
+            talonSRX.getStickyFaults(faults);
+        }
+
+        @Override
+        public Switch underVoltage() {
+            return () -> faults.UnderVoltage;
+        }
+
+        @Override
+        public Switch forwardLimitSwitch() {
+            return () -> faults.ForwardLimitSwitch;
+        }
+
+        @Override
+        public Switch reverseLimitSwitch() {
+            return () -> faults.ReverseLimitSwitch;
+        }
+
+        @Override
+        public Switch forwardSoftLimit() {
+            return () -> faults.ForwardSoftLimit;
+        }
+
+        @Override
+        public Switch reverseSoftLimit() {
+            return () -> faults.ReverseSoftLimit;
+        }
+
+        @Override
+        public Switch hardwareFailure() {
+            return () -> false;
+        }
+    }
+
+    public static class FaultsWrapper implements Faults {
+        private com.ctre.phoenix.motorcontrol.Faults faults;
+
+        public FaultsWrapper(com.ctre.phoenix.motorcontrol.can.TalonSRX talonSRX) {
+            this.faults = new com.ctre.phoenix.motorcontrol.Faults();
+            talonSRX.getFaults(faults);
+        }
+
+        @Override
+        public Switch underVoltage() {
+            return () -> faults.UnderVoltage;
+        }
+
+        @Override
+        public Switch forwardLimitSwitch() {
+            return () -> faults.ForwardLimitSwitch;
+        }
+
+        @Override
+        public Switch reverseLimitSwitch() {
+            return () -> faults.ReverseLimitSwitch;
+        }
+
+        @Override
+        public Switch forwardSoftLimit() {
+            return () -> faults.ForwardSoftLimit;
+        }
+
+        @Override
+        public Switch reverseSoftLimit() {
+            return () -> faults.ReverseSoftLimit;
+        }
+
+        @Override
+        public Switch hardwareFailure() {
+            return () -> faults.HardwareFailure;
+        }
+    }
+
     /**
      * The set of possible faults that this module can trigger.
      */
     public static interface Faults {
-
-        /**
-         * The switch that is {@link Switch#isTriggered() triggered} when the Talon's over-temperature fault is tripped.
-         *
-         * @return the switch; never null
-         */
-        Switch overTemperature();
 
         /**
          * The switch that is {@link Switch#isTriggered() triggered} when the voltage is too low.

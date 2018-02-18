@@ -224,7 +224,7 @@ public interface TalonController extends PIDController, TalonSRX {
     public TalonController enableReverseSoftLimit(boolean enable);
 
     @Override
-    public TalonController enableLimitSwitch(boolean forward, boolean reverse);
+    public TalonController enableLimitSwitch(boolean enabled);
 
     @Override
     public TalonController setForwardLimitSwitchNormallyOpen(boolean normallyOpen);
@@ -287,12 +287,4 @@ public interface TalonController extends PIDController, TalonSRX {
     @Override
     public TalonController setVoltageRampRate(double rampRate);
 
-    @Override
-    public TalonController clearStickyFaults();
-
-    @Override
-    public TalonController setSafetyEnabled(boolean enabled);
-
-    @Override
-    public TalonController setExpiration(double timeout);
 }
