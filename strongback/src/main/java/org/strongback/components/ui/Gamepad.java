@@ -60,13 +60,13 @@ public interface Gamepad extends InputDevice {
 
     public abstract Switch getRightStick();
 
-    public abstract void setRumble(GenericHID.RumbleType rumble, double value);
+    public abstract void setRumble(double left, double right);
 
     public static Gamepad create(IntToDoubleFunction axisToValue, IntToBooleanFunction buttonNumberToSwitch,
                                  IntToIntFunction dPad, ContinuousRange leftX, ContinuousRange leftY, ContinuousRange rightX, ContinuousRange rightY,
                                  ContinuousRange leftTrigger, ContinuousRange rightTrigger, Switch leftBumper, Switch rightBumper, Switch buttonA,
                                  Switch buttonB, Switch buttonX, Switch buttonY, Switch startButton, Switch selectButton, Switch leftStick,
-                                 Switch rightStick, BiConsumer<GenericHID.RumbleType, Double> rumbler) {
+                                 Switch rightStick, BiConsumer<Double, Double> rumbler) {
         return new Gamepad() {
             @Override
             public ContinuousRange getAxis(int axis) {
@@ -80,7 +80,7 @@ public interface Gamepad extends InputDevice {
 
             @Override
             public DirectionalAxis getDPad(int pad) {
-                return ()->dPad.applyAsInt(pad);
+                return () -> dPad.applyAsInt(pad);
             }
 
             @Override
@@ -164,8 +164,8 @@ public interface Gamepad extends InputDevice {
             }
 
             @Override
-            public void setRumble(GenericHID.RumbleType rumble, double value) {
-                rumbler.accept(rumble,value);
+            public void setRumble(double left, double right) {
+                rumbler.accept(left, right);
             }
 
 

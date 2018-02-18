@@ -653,7 +653,7 @@ public class Hardware {
          */
         public static TalonSRX talonSRX(int deviceNumber, TalonSRX leader, boolean reverse) {
             com.ctre.phoenix.motorcontrol.can.TalonSRX talonSRX = new com.ctre.phoenix.motorcontrol.can.TalonSRX(deviceNumber);
-            talonSRX.set(ControlMode.Follower,leader.getDeviceID());
+            talonSRX.set(ControlMode.Follower, leader.getDeviceID());
             talonSRX.setInverted(reverse);
             return talonSRX(talonSRX, 0.0d, 0.0d);
         }
@@ -832,7 +832,10 @@ public class Hardware {
                     () -> joystick.getRawButton(8),
                     () -> joystick.getRawButton(10),
                     () -> joystick.getRawButton(11),
-                    joystick::setRumble);
+                    (l, r) -> {
+                        joystick.setRumble(GenericHID.RumbleType.kLeftRumble, l);
+                        joystick.setRumble(GenericHID.RumbleType.kRightRumble, r);
+                    });
         }
 
         /**
@@ -863,7 +866,10 @@ public class Hardware {
                     () -> joystick.getRawButton(6),
                     () -> joystick.getRawButton(8),
                     () -> joystick.getRawButton(9),
-                    joystick::setRumble
+                    (l, r) -> {
+                        joystick.setRumble(GenericHID.RumbleType.kLeftRumble, l);
+                        joystick.setRumble(GenericHID.RumbleType.kRightRumble, r);
+                    }
             );
         }
 
@@ -895,7 +901,10 @@ public class Hardware {
                     () -> joystick.getRawButton(7),
                     () -> joystick.getRawButton(9),
                     () -> joystick.getRawButton(10),
-                    joystick::setRumble);
+                    (l, r) -> {
+                        joystick.setRumble(GenericHID.RumbleType.kLeftRumble, l);
+                        joystick.setRumble(GenericHID.RumbleType.kRightRumble, r);
+                    });
         }
     }
 }
