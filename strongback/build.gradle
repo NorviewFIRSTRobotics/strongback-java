@@ -1,22 +1,30 @@
 plugins {
-  id "maven"
-  id "maven-publish"
-  id "jaci.openrio.gradle.GradleRIO" version "2018.01.20"
+    id "maven"
+    id "maven-publish"
+    id "jaci.openrio.gradle.GradleRIO" version "2018.01.20"
 }
 
 dependencies {
-  compile wpilib()
-  compile ctre()
-  compile navx()
-  compile openrio.powerup.matchData()
-  compile('io.dropwizard.metrics:metrics-core:3.1.0')
-  compile('junit:junit:4.11')
+    compile wpilib()
+    compile ctre()
+    compile navx()
+    compile openrio.powerup.matchData()
+    compile('io.dropwizard.metrics:metrics-core:3.1.0')
+    compile('junit:junit:4.11')
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
 }
 
 publishing {
-  publications {
-    mavenJava(MavenPublication) {
-      from components.java
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            artifact sourceJar {
+                classifier "sources"
+            }
+        }
     }
-  }
 }
