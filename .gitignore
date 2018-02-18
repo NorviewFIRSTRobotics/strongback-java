@@ -21,3 +21,5 @@ downloads/
 
 .DS_Store
 
+/.idea/
+/strongback-java.iml
