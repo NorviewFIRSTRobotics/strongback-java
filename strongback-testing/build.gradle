@@ -7,3 +7,11 @@ plugins {
 dependencies {
   compile project(":strongback")
 }
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+    }
+  }
+}
