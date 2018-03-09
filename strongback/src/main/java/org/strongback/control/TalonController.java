@@ -97,7 +97,7 @@ public interface TalonController extends PIDController, TalonSRX {
     /**
      * A set of gains.
      */
-    public static interface Gains extends PIDController.Gains {
+    interface Gains extends PIDController.Gains {
 
         /**
          * Get the IZone value for the current profile of this controller. When IZone is used, the controller will automatically
@@ -105,20 +105,20 @@ public interface TalonController extends PIDController, TalonSRX {
          *
          * @return the IZone value
          */
-        public double getIzone();
+        double getIzone();
 
         /**
          * Get the closed loop ramp rate for the current profile of this controller.
          *
          * @return the feed forward gain
          */
-        public double getCloseLoopRampRate();
+        double getCloseLoopRampRate();
     }
 
     /**
      * The type of control input used by this Talon controller.
      */
-    public static enum ControlMode {
+    enum ControlMode {
         /**
          * Directly control the motor by setting the speed as percent voltage, from -1.0 to 1.0 with 0.0 as stopped.
          */
@@ -151,7 +151,7 @@ public interface TalonController extends PIDController, TalonSRX {
             return null;
         }
 
-        private ControlMode(int value) {
+        ControlMode(int value) {
             this.value = value;
         }
 
@@ -165,7 +165,7 @@ public interface TalonController extends PIDController, TalonSRX {
      *
      * @return the control mode; never null
      */
-    public ControlMode getControlMode();
+    ControlMode getControlMode();
 
     /**
      * Set the control mode for this controller.
@@ -173,10 +173,10 @@ public interface TalonController extends PIDController, TalonSRX {
      * @param mode the control mode; may not be null
      * @return this object so that methods can be chained; never null
      */
-    public TalonController setControlMode(ControlMode mode);
+    TalonController setControlMode(ControlMode mode);
 
     @Override
-    public TalonController setFeedbackDevice(FeedbackDevice device);
+    TalonController setFeedbackDevice(FeedbackDevice device);
 
     /**
      * Get the current target angle for this controller as defined by the selected input sensor in degrees.
@@ -184,7 +184,7 @@ public interface TalonController extends PIDController, TalonSRX {
      * @see #withTarget(double)
      */
     @Override
-    public double getTarget();
+    double getTarget();
 
     /**
      * Sets the target angle for the controller's selected input sensor in degrees.
@@ -195,13 +195,13 @@ public interface TalonController extends PIDController, TalonSRX {
      * @see #getTarget()
      */
     @Override
-    public TalonController withTarget(double angleInDegrees);
+    TalonController withTarget(double angleInDegrees);
 
     @Override
-    public TalonController setStatusFrameRate(StatusFrameRate frameRate, int periodMillis);
+    TalonController setStatusFrameRate(StatusFrameRate frameRate, int periodMillis);
 
     @Override
-    public TalonController reverseSensor(boolean flip);
+    TalonController reverseSensor(boolean flip);
 
     /**
      * Flips the sign (multiplies by negative one) the throttle values going into the motor on the talon in closed loop modes.
@@ -209,37 +209,37 @@ public interface TalonController extends PIDController, TalonSRX {
      * @param flip <code>true</code> if motor output should be flipped; or <code>false</code> if not.
      * @return this object so that methods can be chained; never null
      */
-    public TalonController reverseOutput(boolean flip);
+    TalonController reverseOutput(boolean flip);
 
     @Override
-    public TalonController enableForwardSoftLimit(boolean enable);
+    TalonController enableForwardSoftLimit(boolean enable);
 
     @Override
-    public TalonController setForwardSoftLimit(int forwardLimitInDegrees);
+    TalonController setForwardSoftLimit(int forwardLimitInDegrees);
 
     @Override
-    public TalonController setReverseSoftLimit(int reverseLimitInDegrees);
+    TalonController setReverseSoftLimit(int reverseLimitInDegrees);
 
     @Override
-    public TalonController enableReverseSoftLimit(boolean enable);
+    TalonController enableReverseSoftLimit(boolean enable);
 
     @Override
-    public TalonController enableLimitSwitch(boolean enabled);
+    TalonController enableLimitSwitch(boolean enabled);
 
     @Override
-    public TalonController setForwardLimitSwitchNormallyOpen(boolean normallyOpen);
+    TalonController setForwardLimitSwitchNormallyOpen(boolean normallyOpen);
 
     @Override
-    public TalonController setReverseLimitSwitchNormallyOpen(boolean normallyOpen);
+    TalonController setReverseLimitSwitchNormallyOpen(boolean normallyOpen);
 
     @Override
-    public TalonController enableBrakeMode(boolean brake);
+    TalonController enableBrakeMode(boolean brake);
 
     @Override
-    public TalonController withGains(double p, double i, double d);
+    TalonController withGains(double p, double i, double d);
 
     @Override
-    public TalonController withGains(double p, double i, double d, double feedForward);
+    TalonController withGains(double p, double i, double d, double feedForward);
 
     /**
      * Set the gains for the current profile of this controller.
@@ -254,13 +254,13 @@ public interface TalonController extends PIDController, TalonSRX {
      * @return this object so that methods can be chained; never null
      * @see #useProfile(int)
      */
-    public TalonController withGains(double p, double i, double d, double feedForward, int izone, double closeLoopRampRate);
+    TalonController withGains(double p, double i, double d, double feedForward, int izone, double closeLoopRampRate);
 
     @Override
-    public TalonController withProfile(int profile, double p, double i, double d);
+    TalonController withProfile(int profile, double p, double i, double d);
 
     @Override
-    public TalonController withProfile(int profile, double p, double i, double d, double feedForward);
+    TalonController withProfile(int profile, double p, double i, double d, double feedForward);
 
     /**
      * Set the gains for the specified profile of this controller.
@@ -278,13 +278,13 @@ public interface TalonController extends PIDController, TalonSRX {
      * @return this object so that methods can be chained; never null
      * @see #useProfile(int)
      */
-    public TalonController withProfile(int profile, double p, double i, double d, double feedForward, int izone,
-            double closeLoopRampRate);
+    TalonController withProfile(int profile, double p, double i, double d, double feedForward, int izone,
+                                double closeLoopRampRate);
 
     @Override
-    public Gains getGainsForCurrentProfile();
+    Gains getGainsForCurrentProfile();
 
     @Override
-    public TalonController setVoltageRampRate(double rampRate);
+    TalonController setVoltageRampRate(double rampRate);
 
 }

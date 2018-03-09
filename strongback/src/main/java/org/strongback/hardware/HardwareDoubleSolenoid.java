@@ -43,12 +43,16 @@ final class HardwareDoubleSolenoid implements Solenoid {
     }
 
     protected void checkState() {
-        if ( solenoid.get() == Value.kForward ) {
-            direction = Direction.EXTENDING;
-        } else if ( solenoid.get() == Value.kReverse ) {
-            direction = Direction.RETRACTING;
-        } else {
-            direction = Direction.STOPPED;
+        switch (solenoid.get()) {
+            case kForward:
+                direction = Direction.EXTENDING;
+                break;
+            case kReverse:
+                direction = Direction.RETRACTING;
+                break;
+            default:
+                direction = Direction.STOPPED;
+                break;
         }
     }
 

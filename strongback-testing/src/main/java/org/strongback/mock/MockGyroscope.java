@@ -20,6 +20,8 @@ import org.strongback.annotation.ThreadSafe;
 import org.strongback.components.AngleSensor;
 import org.strongback.components.Gyroscope;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * A {@link Gyroscope} implementation useful for testing, where the angle and angular rate can be explicitly set in the test
  * case so that the known values can be read by the component that uses an {@link AngleSensor}.
@@ -29,7 +31,7 @@ import org.strongback.components.Gyroscope;
 @ThreadSafe
 public class MockGyroscope extends MockZeroable implements Gyroscope {
 
-    private volatile double rate = 0;
+    private AtomicLong rate = new AtomicLong();
 
     @Override
     public MockGyroscope zero() {
@@ -44,7 +46,7 @@ public class MockGyroscope extends MockZeroable implements Gyroscope {
 
     @Override
     public double getRate() {
-        return rate;
+        return Double.longBitsToDouble(rate.get());
     }
 
     /**
@@ -65,7 +67,7 @@ public class MockGyroscope extends MockZeroable implements Gyroscope {
      * @return this instance to enable chaining methods; never null
      */
     public MockGyroscope setRate(double angularVelocity) {
-        this.rate = rate;
+        this.rate.set(Double.doubleToLongBits(angularVelocity));
         return this;
     }
 

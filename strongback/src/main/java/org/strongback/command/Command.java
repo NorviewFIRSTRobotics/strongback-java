@@ -16,6 +16,7 @@
 
 package org.strongback.command;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -364,7 +365,7 @@ public abstract class Command {
      * @return the new command; never null
      */
     public static Command cancel(Requirable... requirables) {
-        return create(0.0, () -> true, () -> "Cancel (requires " + requirables + ")", requirables);
+        return create(0.0, () -> true, () -> "Cancel (requires " + Arrays.toString(requirables) + ")", requirables);
     }
 
     /**

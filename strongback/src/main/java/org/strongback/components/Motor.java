@@ -30,7 +30,7 @@ import org.strongback.util.Values;
 @ThreadSafe
 public interface Motor extends SpeedSensor, SpeedController, Stoppable, Requirable {
 
-    public enum Direction {
+    enum Direction {
         FORWARD, REVERSE, STOPPED
     }
 
@@ -40,7 +40,7 @@ public interface Motor extends SpeedSensor, SpeedController, Stoppable, Requirab
      * @return the speed, will be between -1.0 and 1.0 inclusive
      */
     @Override
-    public double getSpeed();
+    double getSpeed();
 
     /**
      * Sets the speed of this {@link Motor}.
@@ -49,13 +49,13 @@ public interface Motor extends SpeedSensor, SpeedController, Stoppable, Requirab
      * @return this object to allow chaining of methods; never null
      */
     @Override
-    public Motor setSpeed(double speed);
+    Motor setSpeed(double speed);
 
     /**
      * Stops this {@link Motor}. Same as calling {@code setSpeed(0.0)}.
      */
     @Override
-    default public void stop() {
+    default void stop() {
         setSpeed(0.0);
     }
 
@@ -73,7 +73,7 @@ public interface Motor extends SpeedSensor, SpeedController, Stoppable, Requirab
      *
      * @return the {@link Direction} of this {@link Motor}
      */
-    default public Direction getDirection() {
+    default Direction getDirection() {
         int direction = Values.fuzzyCompare(getSpeed(), 0.0);
         if (direction < 0)
             return Direction.REVERSE;

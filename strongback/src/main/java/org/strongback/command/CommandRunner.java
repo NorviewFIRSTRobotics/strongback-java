@@ -29,7 +29,7 @@ import org.strongback.command.Scheduler.CommandListener;
  */
 final class CommandRunner {
 
-    static interface Context {
+    interface Context {
         Logger logger();
 
         CommandListener listener();

@@ -33,6 +33,6 @@ public interface SpeedController {
      * @param speed the new speed as a double
      * @return this object to allow chaining of methods; never null
      */
-    public SpeedController setSpeed(double speed);
+    SpeedController setSpeed(double speed);
 
 }

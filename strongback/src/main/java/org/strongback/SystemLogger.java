@@ -27,7 +27,7 @@ import org.strongback.annotation.ThreadSafe;
 final class SystemLogger implements Logger {
 
     private static final int OFF = 0;
-    private static final int ERROR = 2 << 0;
+    private static final int ERROR = 2;
     private static final int WARN = 2 << 1;
     private static final int INFO = 2 << 2;
     private static final int DEBUG = 2 << 3;

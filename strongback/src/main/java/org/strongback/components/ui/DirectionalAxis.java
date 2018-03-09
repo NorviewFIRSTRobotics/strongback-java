@@ -25,5 +25,5 @@ public interface DirectionalAxis {
      * Get the direction that the axis is pointing in.
      * @return the direction
      */
-    public int getDirection();
+    int getDirection();
 }

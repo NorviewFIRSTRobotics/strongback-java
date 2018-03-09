@@ -16,7 +16,6 @@
 
 package org.strongback.hardware;
 
-import com.ctre.CANTalon;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
@@ -28,7 +27,6 @@ import org.strongback.components.Solenoid;
 import org.strongback.components.ui.FlightStick;
 import org.strongback.components.ui.Gamepad;
 import org.strongback.components.ui.InputDevice;
-import org.strongback.control.TalonController;
 import org.strongback.function.DoubleToDoubleFunction;
 import org.strongback.util.Values;
 
@@ -295,7 +293,7 @@ public class Hardware {
          *
          * @see Switches#analog(int, double, double, AnalogOption, TriggerMode)
          */
-        public static enum AnalogOption {
+        public enum AnalogOption {
             /**
              * The filtering option of the analog trigger uses a 3-point average reject filter. This filter uses a circular
              * buffer of the last three data points and selects the outlier point nearest the median as the output. The primary
@@ -310,7 +308,7 @@ public class Hardware {
             /**
              * No filtering or averaging is to be used.
              */
-            NONE;
+            NONE
         }
 
         /**
@@ -318,7 +316,7 @@ public class Hardware {
          *
          * @see Switches#analog(int, double, double, AnalogOption, TriggerMode)
          */
-        public static enum TriggerMode {
+        public enum TriggerMode {
             /**
              * The switch is triggered only when the analog value is inside the range, and not triggered if it is outside (above
              * or below)
@@ -328,7 +326,7 @@ public class Hardware {
              * The switch is triggered only when the value is above the upper limit, and not triggered if it is below the lower
              * limit and maintains the previous state if in between (hysteresis)
              */
-            AVERAGED;
+            AVERAGED
         }
 
         /**
@@ -590,13 +588,13 @@ public class Hardware {
         }
 
         /**
-         * Creates a {@link TalonSRX} motor controlled by a Talon SRX. The {@link CANTalon} object passed into this method
+         * Creates a {@link TalonSRX} motor controlled by a Talon SRX. The {@link com.ctre.phoenix.motorcontrol.can.TalonSRX} object passed into this method
          * should be already configured by the calling code.
          * <p>
          * The resulting {@link TalonSRX} will have a null {@link TalonSRX#getEncoderInput()} and a null
          * {@link TalonSRX#getAnalogInput()}, and the {@link TalonSRX#getSelectedSensor()} will always return 0.
          *
-         * @param talon the already configured {@link CANTalon} instance; may not be null
+         * @param talon the already configured {@link com.ctre.phoenix.motorcontrol.can.TalonSRX} instance; may not be null
          * @return a {@link TalonSRX} motor; never null
          */
         public static TalonSRX talonSRX(com.ctre.phoenix.motorcontrol.can.TalonSRX talon) {
@@ -604,14 +602,14 @@ public class Hardware {
         }
 
         /**
-         * Creates a {@link TalonSRX} motor controlled by a Talon SRX with an optional (angle) sensor. The {@link CANTalon}
+         * Creates a {@link TalonSRX} motor controlled by a Talon SRX with an optional (angle) sensor. The {@link com.ctre.phoenix.motorcontrol.can.TalonSRX}
          * object passed into this method should be already configured by the calling code.
          * <p>
          * The resulting {@link TalonSRX} will have a non-null {@link TalonSRX#getEncoderInput()} when the
          * <code>pulsesPerDegree</code> is non-zero. But the resulting {@link TalonSRX} will always have a null
          * {@link TalonSRX#getAnalogInput()}.
          *
-         * @param talon           the already configured {@link CANTalon} instance; may not be null
+         * @param talon           the already configured {@link com.ctre.phoenix.motorcontrol.can.TalonSRX} instance; may not be null
          * @param pulsesPerDegree the number of encoder pulses per degree of revolution of the final shaft
          * @return a {@link TalonSRX} motor; never null
          */
@@ -622,14 +620,14 @@ public class Hardware {
 
         /**
          * Creates a {@link TalonSRX} motor controlled by a Talon SRX with and optional quadrature encoder and/or an analog 3.3V
-         * input wired into the Talon. The {@link CANTalon} object passed into this method should be already configured by the
+         * input wired into the Talon. The {@link com.ctre.phoenix.motorcontrol.can.TalonSRX} object passed into this method should be already configured by the
          * calling code.
          * <p>
          * The resulting {@link TalonSRX} will have a non-null {@link TalonSRX#getEncoderInput()} when the
          * <code>pulsesPerDegree</code> is non-zero. Likewise, the resulting {@link TalonSRX} will have a non-null
          * {@link TalonSRX#getAnalogInput()} when the <code>analogTurnsOverVoltageRange</code> is non-zero.
          *
-         * @param talon                       the already configured {@link CANTalon} instance; may not be null
+         * @param talon                       the already configured {@link com.ctre.phoenix.motorcontrol.can.TalonSRX} instance; may not be null
          * @param pulsesPerDegree             the number of encoder pulses per degree of revolution of the final shaft
          * @param analogTurnsOverVoltageRange the number of turns of an analog pot or analog encoder over the 0-3.3V range; may
          *                                    be 0 if unused
@@ -637,7 +635,7 @@ public class Hardware {
          */
         @Experimental
         public static TalonSRX talonSRX(com.ctre.phoenix.motorcontrol.can.TalonSRX talon, double pulsesPerDegree, double analogTurnsOverVoltageRange) {
-            if (talon == null) throw new IllegalArgumentException("The CANTalon reference may not be null");
+            if (talon == null) throw new IllegalArgumentException("The com.ctre.phoenix.motorcontrol.can.TalonSRX reference may not be null");
             return new HardwareTalonSRX(talon, pulsesPerDegree, analogTurnsOverVoltageRange);
         }
 

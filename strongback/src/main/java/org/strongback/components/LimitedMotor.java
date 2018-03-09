@@ -47,7 +47,7 @@ public interface LimitedMotor extends Motor {
     /**
      * The possible positions for a limited motor.
      */
-    public enum Position {
+    enum Position {
         /** The motor is at the forward direction limit. **/
         FORWARD_LIMIT,
         /** The motor is at the reverse direction limit. **/
@@ -57,21 +57,21 @@ public interface LimitedMotor extends Motor {
     }
 
     @Override
-    public LimitedMotor setSpeed(double speed);
+    LimitedMotor setSpeed(double speed);
 
     /**
      * Get the switch that signals when this motor reaches its limit in the forward direction.
      *
      * @return the forward direction limit switch; never null
      */
-    public Switch getForwardLimitSwitch();
+    Switch getForwardLimitSwitch();
 
     /**
      * Get the switch that signals when this motor reaches its limit in the reverse direction.
      *
      * @return the reverse direction limit switch; never null
      */
-    public Switch getReverseLimitSwitch();
+    Switch getReverseLimitSwitch();
 
     /**
      * Tests if this {@link LimitedMotor} is at the high limit. This is equivalent to calling
@@ -79,7 +79,7 @@ public interface LimitedMotor extends Motor {
      *
      * @return {@code true} if this {@link LimitedMotor} is at the forward limit; {@code false} otherwise
      */
-    default public boolean isAtForwardLimit() {
+    default boolean isAtForwardLimit() {
         return getForwardLimitSwitch().isTriggered();
     }
 
@@ -89,7 +89,7 @@ public interface LimitedMotor extends Motor {
      *
      * @return {@code true} if this {@link LimitedMotor} is at the low limit; {@code false} otherwise
      */
-    default public boolean isAtReverseLimit() {
+    default boolean isAtReverseLimit() {
         return getReverseLimitSwitch().isTriggered();
     }
 
@@ -100,7 +100,7 @@ public interface LimitedMotor extends Motor {
      * @param speed the speed at which the underlying {@link Motor} should spin in the forward direction
      * @return {@code true} if the motor remains moving, or {@code false} if it has reached the forward limit
      */
-    default public boolean forward(double speed) {
+    default boolean forward(double speed) {
         // Motor protection
         if (!isAtForwardLimit()) {
             setSpeed(Math.abs(speed));
@@ -117,7 +117,7 @@ public interface LimitedMotor extends Motor {
      * @param speed the speed at which the underlying {@link Motor} should spin in the reverse direction
      * @return {@code true} if the motor remains moving, or {@code false} if it has reached the forward limit
      */
-    default public boolean reverse(double speed) {
+    default boolean reverse(double speed) {
         // Motor protection
         if (!isAtReverseLimit()) {
             setSpeed(-Math.abs(speed));
@@ -132,7 +132,7 @@ public interface LimitedMotor extends Motor {
      *
      * @return a {@link Position} representing the current position of this {@link LimitedMotor}
      */
-    default public Position getPosition() {
+    default Position getPosition() {
         switch (getDirection()) {
             case FORWARD:
             case REVERSE:
@@ -157,7 +157,7 @@ public interface LimitedMotor extends Motor {
      * @return the limited motor; never null
      * @throws IllegalArgumentException if the {@code motor} parameter is null
      */
-    public static LimitedMotor create(Motor motor, Switch forwardSwitch, Switch reverseSwitch) {
+    static LimitedMotor create(Motor motor, Switch forwardSwitch, Switch reverseSwitch) {
         if (motor == null) throw new IllegalArgumentException("The motor may not be null");
         Switch fwdSwitch = forwardSwitch != null ? forwardSwitch : Switch.neverTriggered();
         Switch revSwitch = reverseSwitch != null ? reverseSwitch : Switch.neverTriggered();

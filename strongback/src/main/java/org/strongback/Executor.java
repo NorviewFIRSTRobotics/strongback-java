@@ -24,21 +24,8 @@ import org.strongback.annotation.ThreadSafe;
 @ThreadSafe
 public interface Executor {
 
-    public static enum Priority {
-        HIGH, MEDIUM, LOW;
-    }
-
-    /**
-     * Register a high priority {@link Executable} task so that it is called repeatedly on Strongback's executor thread.
-     *
-     * @param task the executable task
-     * @return {@code true} if the executable task was registered for the first time as a high priority, or {@code false} if
-     *         {@code task} was null or was already registered with this executor at high priority
-     * @deprecated Use {@link #register(Executable, Priority)} instead
-     */
-    @Deprecated
-    default boolean register(Executable task) {
-        return register(task, Priority.HIGH);
+    enum Priority {
+        HIGH, MEDIUM, LOW
     }
 
     /**
@@ -54,7 +41,7 @@ public interface Executor {
      * @return {@code true} if the executable task was registered for the first time at the given priority, or {@code false} if
      *         {@code task} was null or was already registered with this executor at the given priority
      */
-    public boolean register(Executable task, Priority priority);
+    boolean register(Executable task, Priority priority);
 
     /**
      * Unregister an {@link Executable} task to no longer be called.
@@ -62,10 +49,10 @@ public interface Executor {
      * @param task the executable task
      * @return true if the executable task was unregistered, or false if it was null or not registered with this executor
      */
-    public boolean unregister(Executable task);
+    boolean unregister(Executable task);
 
     /**
      * Unregister all {@link Executable} tasks.
      */
-    public void unregisterAll();
+    void unregisterAll();
 }

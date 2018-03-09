@@ -33,14 +33,14 @@ public interface ContinuousRange {
      *
      * @return the value in the range [-1.0, 1.0] inclusive.
      */
-    public double read();
+    double read();
 
     /**
      * Create a new range that inverts the values of this instance.
      *
      * @return the new inverted range; never null
      */
-    default public ContinuousRange invert() {
+    default ContinuousRange invert() {
         return () -> this.read() * -1.0;
     }
 
@@ -50,7 +50,7 @@ public interface ContinuousRange {
      * @param scale the scaling factor
      * @return the new scaled range; never null
      */
-    default public ContinuousRange scale(double scale) {
+    default ContinuousRange scale(double scale) {
         return () -> this.read() * scale;
     }
 
@@ -60,7 +60,7 @@ public interface ContinuousRange {
      * @param scale the function that determines the scaling factor
      * @return the new scaled range; never null
      */
-    default public ContinuousRange scale(DoubleSupplier scale) {
+    default ContinuousRange scale(DoubleSupplier scale) {
         return () -> this.read() * scale.getAsDouble();
     }
 
@@ -70,7 +70,7 @@ public interface ContinuousRange {
      * @param mapFunction the function that maps the current value to another
      * @return the new mapped range; never null
      */
-    default public ContinuousRange map(DoubleToDoubleFunction mapFunction) {
+    default ContinuousRange map(DoubleToDoubleFunction mapFunction) {
         return () -> mapFunction.applyAsDouble(this.read());
     }
 
@@ -80,7 +80,7 @@ public interface ContinuousRange {
      * @param scale the scaling factor
      * @return the new scaled IntSupplier; never null
      */
-    default public IntSupplier scaleAsInt(double scale) {
+    default IntSupplier scaleAsInt(double scale) {
         return () -> (int)(this.read() * scale);
     }
 }

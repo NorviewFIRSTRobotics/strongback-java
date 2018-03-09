@@ -42,7 +42,7 @@ import org.strongback.annotation.ThreadSafe;
 @ThreadSafe
 public interface Relay {
 
-    static enum State {
+    enum State {
         /** The relay is presently switching into the "ON" state but has not yet completed the change. */
         SWITCHING_ON,
         /** The relay is presently in the "on" position. */

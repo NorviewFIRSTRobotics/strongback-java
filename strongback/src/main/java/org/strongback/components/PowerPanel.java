@@ -33,7 +33,7 @@ public interface PowerPanel {
      * @param channel the channel to read
      * @return the current sensor for the given channel; never null
      */
-    public CurrentSensor getCurrentSensor(int channel);
+    CurrentSensor getCurrentSensor(int channel);
 
     /**
      * Gets the current output from the specified channel in amps.
@@ -41,7 +41,7 @@ public interface PowerPanel {
      * @param channel the channel to read
      * @return the current of the specified channel
      */
-    default public double getCurrent(int channel) {
+    default double getCurrent(int channel) {
         return getCurrentSensor(channel).getCurrent();
     }
 
@@ -50,7 +50,7 @@ public interface PowerPanel {
      *
      * @return the total current sensor; never null
      */
-    public CurrentSensor getTotalCurrentSensor();
+    CurrentSensor getTotalCurrentSensor();
 
     /**
      * Gets the total current (in amps) for this {@link PowerPanel}. This is equivalent to calling
@@ -58,7 +58,7 @@ public interface PowerPanel {
      *
      * @return the total current; never null
      */
-    default public double getTotalCurrent() {
+    default double getTotalCurrent() {
         return getTotalCurrentSensor().getCurrent();
     }
 
@@ -67,7 +67,7 @@ public interface PowerPanel {
      *
      * @return the input voltage sensor; never null
      */
-    public VoltageSensor getVoltageSensor();
+    VoltageSensor getVoltageSensor();
 
     /**
      * Gets the input voltage (in volts) of this {@link PowerPanel}. This is equivalent to calling
@@ -75,7 +75,7 @@ public interface PowerPanel {
      *
      * @return the input voltage; never null
      */
-    default public double getVoltage() {
+    default double getVoltage() {
         return getVoltageSensor().getVoltage();
     }
 
@@ -84,7 +84,7 @@ public interface PowerPanel {
      *
      * @return the temperature sensor; never null
      */
-    public TemperatureSensor getTemperatureSensor();
+    TemperatureSensor getTemperatureSensor();
 
     /**
      * Gets the temperature of this {@link PowerPanel} in degrees Celsius. This is equivalent to calling
@@ -92,7 +92,7 @@ public interface PowerPanel {
      *
      * @return the temperature of this {@link PowerPanel}
      */
-    default public double getTemperature() {
+    default double getTemperature() {
         return getTemperatureSensor().getTemperatureInCelsius();
     }
 
@@ -106,8 +106,8 @@ public interface PowerPanel {
      * @return the power panel; never null
      * @see Hardware#powerPanel()
      */
-    public static PowerPanel create(IntToDoubleFunction currentForChannel, DoubleSupplier totalCurrent, DoubleSupplier voltage,
-            DoubleSupplier temperature) {
+    static PowerPanel create(IntToDoubleFunction currentForChannel, DoubleSupplier totalCurrent, DoubleSupplier voltage,
+                             DoubleSupplier temperature) {
         return new PowerPanel() {
 
             @Override
@@ -142,8 +142,8 @@ public interface PowerPanel {
      * @return the power panel; never null
      * @see Hardware#powerPanel()
      */
-    public static PowerPanel create(Function<Integer, CurrentSensor> currentSensorForChannel, CurrentSensor totalCurrent,
-            VoltageSensor voltage, TemperatureSensor temperature) {
+    static PowerPanel create(Function<Integer, CurrentSensor> currentSensorForChannel, CurrentSensor totalCurrent,
+                             VoltageSensor voltage, TemperatureSensor temperature) {
         return new PowerPanel() {
             @Override
             public CurrentSensor getCurrentSensor(int channel) {

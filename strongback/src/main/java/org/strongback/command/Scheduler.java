@@ -30,10 +30,10 @@ public class Scheduler implements Executable {
     private static CommandListener NO_OP = (command, state) -> {
     };
 
-    public static interface CommandListener {
-        public void record(Command command, CommandState state);
+    public interface CommandListener {
+        void record(Command command, CommandState state);
 
-        public static CommandListener noOp() {
+        static CommandListener noOp() {
             return NO_OP;
         }
     }

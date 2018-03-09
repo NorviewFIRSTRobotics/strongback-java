@@ -26,8 +26,8 @@ import org.strongback.annotation.ThreadSafe;
 @ThreadSafe
 public interface Logger {
 
-    public static enum Level {
-        ERROR, WARN, INFO, DEBUG, TRACE, OFF;
+    enum Level {
+        ERROR, WARN, INFO, DEBUG, TRACE, OFF
     }
 
     /**
@@ -36,7 +36,7 @@ public interface Logger {
      *
      * @param t the exception
      */
-    public void error(Throwable t);
+    void error(Throwable t);
 
     /**
      * Log an exception and a custom error message at the error level. The exception and message are logged only if error-level
@@ -45,48 +45,48 @@ public interface Logger {
      * @param t the exception
      * @param message the error message
      */
-    public void error(Throwable t, String message);
+    void error(Throwable t, String message);
 
     /**
      * Log a message at the error level. The message is logged only if error-level (or higher) logging is enabled.
      *
      * @param message the error message
      */
-    public void error(String message);
+    void error(String message);
 
     /**
      * Log a message at the warning level. The message is logged only if warning-level (or higher) logging is enabled.
      *
      * @param message the warning message
      */
-    public void warn(String message);
+    void warn(String message);
 
     /**
      * Log a message at the information level. The message is logged only if information-level (or higher) logging is enabled.
      *
      * @param message the message
      */
-    public void info(String message);
+    void info(String message);
 
     /**
      * Log a message at the debug level. The message is logged only if debug-level (or higher) logging is enabled.
      *
      * @param message the message
      */
-    public void debug(String message);
+    void debug(String message);
 
     /**
      * Log a message at the trace level. The message is logged only if trace-level (or higher) logging is enabled.
      *
      * @param message the message
      */
-    public void trace(String message);
+    void trace(String message);
 
     /**
      * Get a {@link Logger} implementation that does nothing with log messages.
      * @return the no-operation logger; never null
      */
-    public static Logger noOp() {
+    static Logger noOp() {
         return NoOpLogger.INSTANCE;
     }
 }

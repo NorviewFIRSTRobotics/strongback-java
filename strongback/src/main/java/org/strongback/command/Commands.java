@@ -78,7 +78,7 @@ final class Commands {
     }
 
     private void remove(CommandRunner runner) {
-        runner.getRequired().forEach(required->inUse.remove(required));
+        runner.getRequired().forEach(inUse::remove);
         runner.after(this);
     }
 

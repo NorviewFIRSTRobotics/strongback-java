@@ -36,5 +36,5 @@ public interface IntToIntFunction {
      * @param value the function argument
      * @return the function result
      */
-    public int applyAsInt(int value);
+    int applyAsInt(int value);
 }

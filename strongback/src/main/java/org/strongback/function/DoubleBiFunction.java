@@ -37,5 +37,5 @@ public interface DoubleBiFunction {
      * @param u the second function argument
      * @return the function result
      */
-    public double applyAsDouble(double t, double u);
+    double applyAsDouble(double t, double u);
 }

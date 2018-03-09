@@ -31,5 +31,5 @@ public interface SpeedSensor {
      *
      * @return the speed
      */
-    public double getSpeed();
+    double getSpeed();
 }

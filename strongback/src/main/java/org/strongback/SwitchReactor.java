@@ -46,7 +46,7 @@ public interface SwitchReactor {
      * @param swtch the {@link Switch}
      * @param commandSupplier the supplier of the command to submit; may not be null but may return a null command
      */
-    default public void onTriggeredSubmit(Switch swtch, Supplier<Command> commandSupplier) {
+    default void onTriggeredSubmit(Switch swtch, Supplier<Command> commandSupplier) {
         onTriggered(swtch,()->Strongback.submit(commandSupplier.get()));
     }
 
@@ -56,7 +56,7 @@ public interface SwitchReactor {
      * @param swtch the {@link Switch}
      * @param commandSupplier the supplier of the command to submit; may not be null but may return a null command
      */
-    default public void onUntriggeredSubmit(Switch swtch, Supplier<Command> commandSupplier) {
+    default void onUntriggeredSubmit(Switch swtch, Supplier<Command> commandSupplier) {
         onTriggered(swtch,()->Strongback.submit(commandSupplier.get()));
     }
 
@@ -66,7 +66,7 @@ public interface SwitchReactor {
      * @param swtch the {@link Switch}
      * @param function the function to execute when the switch is triggered
      */
-    public void onTriggered(Switch swtch, Runnable function);
+    void onTriggered(Switch swtch, Runnable function);
 
     /**
      * Register a {@link Runnable} function that is to be called the moment when the specified {@link Switch} is untriggered.
@@ -74,7 +74,7 @@ public interface SwitchReactor {
      * @param swtch the {@link Switch}
      * @param function the function to execute when the switch is untriggered
      */
-    public void onUntriggered(Switch swtch, Runnable function);
+    void onUntriggered(Switch swtch, Runnable function);
 
     /**
      * Register a {@link Runnable} function to be called repeatedly whenever the specified {@link Switch} is in the triggered
@@ -83,7 +83,7 @@ public interface SwitchReactor {
      * @param swtch the {@link Switch}
      * @param function the function to execute while the switch remains triggered
      */
-    public void whileTriggered(Switch swtch, Runnable function);
+    void whileTriggered(Switch swtch, Runnable function);
 
     /**
      * Register a {@link Runnable} function to be called repeatedly whenever the specified {@link Switch} is not in the
@@ -92,5 +92,5 @@ public interface SwitchReactor {
      * @param swtch the {@link Switch}
      * @param function the function to execute while the switch remains untriggered
      */
-    public void whileUntriggered(Switch swtch, Runnable function);
+    void whileUntriggered(Switch swtch, Runnable function);
 }

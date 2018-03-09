@@ -29,5 +29,5 @@ public interface VoltageSensor {
      *
      * @return the current voltage
      */
-    public double getVoltage();
+    double getVoltage();
 }

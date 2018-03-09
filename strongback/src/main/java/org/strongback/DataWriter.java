@@ -29,11 +29,11 @@ public interface DataWriter extends AutoCloseable {
      *
      * @param time the current time in milliseconds
      */
-    public void write(long time);
+    void write(long time);
 
     /**
      * Frees the resources used by this {@link DataWriter}.
      */
     @Override
-    public void close();
+    void close();
 }

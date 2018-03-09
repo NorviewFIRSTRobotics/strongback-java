@@ -87,7 +87,7 @@ public class MockPIDController extends MockController implements PIDController {
             this.i = i;
             this.d = d;
             this.feedForward = feedForward;
-        };
+        }
 
         @Override
         public double getP() {

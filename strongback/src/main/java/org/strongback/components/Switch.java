@@ -16,9 +16,11 @@
 
 package org.strongback.components;
 
-import java.util.Objects;
-
 import org.strongback.annotation.ThreadSafe;
+import org.strongback.components.ui.ContinuousRange;
+
+import java.util.Objects;
+import java.util.function.Predicate;
 
 
 /**
@@ -34,47 +36,63 @@ public interface Switch {
      *
      * @return {@code true} if this switch was triggered, or {@code false} otherwise
      */
-    public boolean isTriggered();
+    boolean isTriggered();
 
     /**
      * Create a switch that is always triggered.
+     *
      * @return the always-triggered switch; never null
      */
-    public static Switch alwaysTriggered() {
-        return ()->true;
+    static Switch alwaysTriggered() {
+        return () -> true;
     }
 
     /**
      * Create a switch that is never triggered.
+     *
      * @return the never-triggered switch; never null
      */
-    public static Switch neverTriggered() {
-        return ()->false;
+    static Switch neverTriggered() {
+        return () -> false;
     }
 
     /**
      * Return a new switch that is only triggered when <em>both</em> switches are triggered.
+     *
      * @param switch1 the first switch; may not be null
      * @param switch2 the second switch; may not be null
      * @return the logical AND of the two switches; never null
      */
-    public static Switch and( Switch switch1, Switch switch2 ) {
-        Objects.requireNonNull(switch1,"The first switch may not be null");
-        Objects.requireNonNull(switch2,"The second switch may not be null");
-        if ( switch1 == switch2 ) return switch1;
-        return ()->switch1.isTriggered() && switch2.isTriggered();
+    static Switch and(Switch switch1, Switch switch2) {
+        Objects.requireNonNull(switch1, "The first switch may not be null");
+        Objects.requireNonNull(switch2, "The second switch may not be null");
+        if (switch1 == switch2) return switch1;
+        return () -> switch1.isTriggered() && switch2.isTriggered();
     }
 
     /**
      * Return a new switch that is only triggered when <em>either</em> switch is triggered.
+     *
      * @param switch1 the first switch; may not be null
      * @param switch2 the second switch; may not be null
      * @return the logical OR of the two switches; never null
      */
-    public static Switch or( Switch switch1, Switch switch2 ) {
-        Objects.requireNonNull(switch1,"The first switch may not be null");
-        Objects.requireNonNull(switch2,"The second switch may not be null");
-        if ( switch1 == switch2 ) return switch1;
-        return ()->switch1.isTriggered() || switch2.isTriggered();
+    static Switch or(Switch switch1, Switch switch2) {
+        Objects.requireNonNull(switch1, "The first switch may not be null");
+        Objects.requireNonNull(switch2, "The second switch may not be null");
+        if (switch1 == switch2) return switch1;
+        return () -> switch1.isTriggered() || switch2.isTriggered();
+    }
+
+    static <T> Switch from(T t, Predicate<T> predicate) {
+        return () -> predicate.test(t);
+    }
+
+    static Switch from(ContinuousRange range, double value) {
+        return from(range, r -> r.read() > value);
+    }
+
+    static Switch from(ContinuousRange range) {
+        return from(range, 0.5);
     }
 }

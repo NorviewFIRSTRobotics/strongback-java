@@ -33,17 +33,17 @@ public interface Counter extends Zeroable {
      *
      * @return the current count; will never be negative
      */
-    public int get();
+    int get();
 
     /**
      * Increment the counter.
      *
      * @return this object to allow chaining of methods; never null
      */
-    public Counter increment();
+    Counter increment();
 
     @Override
-    public Counter zero();
+    Counter zero();
 
     /**
      * Create a new counter that will monotonically increment by 1 and upon reaching the {@link Integer#MAX_VALUE maximum
@@ -51,7 +51,7 @@ public interface Counter extends Zeroable {
      *
      * @return the new counter; never null
      */
-    public static Counter unlimited() {
+    static Counter unlimited() {
         return circular(Integer.MAX_VALUE);
     }
 
@@ -62,7 +62,7 @@ public interface Counter extends Zeroable {
      * @param initial the initial value for the counter; must be 0 or positive
      * @return the new counter; never null
      */
-    public static Counter unlimited(int initial) {
+    static Counter unlimited(int initial) {
         return circular(initial, 1, Integer.MAX_VALUE);
     }
 
@@ -73,7 +73,7 @@ public interface Counter extends Zeroable {
      * @param maximum the maximum value for the counter before it resets to 0; this must be positive
      * @return the new counter; never null
      */
-    public static Counter circular(int maximum) {
+    static Counter circular(int maximum) {
         return circular(0, 1, maximum);
     }
 
@@ -89,7 +89,7 @@ public interface Counter extends Zeroable {
      * @throws IllegalArgumentException if {@code initial} or {@code resetValue} are negative, or if {@code maximum} is less
      *         than or equal to {@code initial}, or if {@code increment} is not positive
      */
-    public static Counter circular(int initial, int increment, int maximum) {
+    static Counter circular(int initial, int increment, int maximum) {
         if (initial < 0) throw new IllegalArgumentException("The intial value must be non-negative");
         if (maximum <= initial) throw new IllegalArgumentException("The maximum value must be greater than the initial value");
         if (increment < 1) throw new IllegalArgumentException("The increment value must be positive");

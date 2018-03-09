@@ -56,8 +56,8 @@ public final class Values {
      * Calculate the tolerance for the given number of bits of precision. The tolerance is calculated as {@code 1/(2^n)}, where
      * {@code n} is the number of bits. For example, a precision of 4 bits results in a tolerance of 0.0625.
      *
-     * @param bits
-     * @return
+     * @param bits bits of precision
+     * @return tolerance
      */
     private static double calcTolerance(int bits) {
         return 1.0 / (1 << bits);
@@ -116,17 +116,14 @@ public final class Values {
     public static DoubleToDoubleFunction limiter(double minimum, double maximum) {
         if (maximum < minimum) throw new IllegalArgumentException(
                 "The minimum value must be less than or equal to the maximum value");
-        return new DoubleToDoubleFunction() {
-            @Override
-            public double applyAsDouble(double value) {
-                if (value > maximum) {
-                    return maximum;
-                }
-                if (value < minimum) {
-                    return minimum;
-                }
-                return value;
+        return value -> {
+            if (value > maximum) {
+                return maximum;
             }
+            if (value < minimum) {
+                return minimum;
+            }
+            return value;
         };
     }
 
@@ -168,22 +165,19 @@ public final class Values {
         if (maximum < 0) throw new IllegalArgumentException("The maximum value may not be negative");
         if (maximum < minimum) throw new IllegalArgumentException(
                 "The minimum value must be less than or equal to the maximum value");
-        return new DoubleToDoubleFunction() {
-            @Override
-            public double applyAsDouble(double num) {
-                if (num > maximum) {
-                    return maximum;
-                }
-                double positiveNum = Math.abs(num);
-                if (positiveNum > maximum) {
-                    return -maximum;
-                }
-                return positiveNum > minimum ? num : 0.0;
+        return num -> {
+            if (num > maximum) {
+                return maximum;
             }
+            double positiveNum = Math.abs(num);
+            if (positiveNum > maximum) {
+                return -maximum;
+            }
+            return positiveNum > minimum ? num : 0.0;
         };
     }
 
-    public static interface RangeMaker {
+    public interface RangeMaker {
         DoubleToDoubleFunction toRange(double minOutputValue, double maxOutputValue);
     }
 
@@ -210,9 +204,7 @@ public final class Values {
      * @see #mapRange(double, double, double, double)
      */
     public static RangeMaker mapRange(double minInputValue, double maxInputValue) {
-        return (minOutput, maxOutput) -> {
-            return mapRange(minInputValue, maxInputValue, minOutput, maxOutput);
-        };
+        return (minOutput, maxOutput) -> mapRange(minInputValue, maxInputValue, minOutput, maxOutput);
     }
 
     /**
@@ -228,17 +220,14 @@ public final class Values {
     public static DoubleToDoubleFunction mapRange(double minInputValue, double maxInputValue, double minOutputValue,
             double maxOutputValue) {
         double factor = (maxOutputValue - minOutputValue) / (maxInputValue - minInputValue);
-        return new DoubleToDoubleFunction() {
-            @Override
-            public double applyAsDouble(double num) {
-                if (num <= minInputValue) return minOutputValue;
-                if (num >= maxInputValue) return maxOutputValue;
-                double output = minOutputValue + ((num - minInputValue) * factor);
-                if (output < minOutputValue)
-                    output = minOutputValue;
-                else if (output > maxOutputValue) output = maxOutputValue;
-                return output;
-            }
+        return num -> {
+            if (num <= minInputValue) return minOutputValue;
+            if (num >= maxInputValue) return maxOutputValue;
+            double output = minOutputValue + ((num - minInputValue) * factor);
+            if (output < minOutputValue)
+                output = minOutputValue;
+            else if (output > maxOutputValue) output = maxOutputValue;
+            return output;
         };
     }
 

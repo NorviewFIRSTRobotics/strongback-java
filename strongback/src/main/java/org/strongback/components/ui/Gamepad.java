@@ -19,7 +19,6 @@ package org.strongback.components.ui;
 import java.util.function.BiConsumer;
 import java.util.function.IntToDoubleFunction;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import org.strongback.components.Switch;
 import org.strongback.function.IntToBooleanFunction;
 import org.strongback.function.IntToIntFunction;
@@ -28,45 +27,45 @@ import org.strongback.function.IntToIntFunction;
  * A type of input device similar to an Xbox controller.
  */
 public interface Gamepad extends InputDevice {
-    public abstract ContinuousRange getLeftX();
+    ContinuousRange getLeftX();
 
-    public abstract ContinuousRange getLeftY();
+    ContinuousRange getLeftY();
 
-    public abstract ContinuousRange getRightX();
+    ContinuousRange getRightX();
 
-    public abstract ContinuousRange getRightY();
+    ContinuousRange getRightY();
 
-    public abstract ContinuousRange getLeftTrigger();
+    ContinuousRange getLeftTrigger();
 
-    public abstract ContinuousRange getRightTrigger();
+    ContinuousRange getRightTrigger();
 
-    public abstract Switch getLeftBumper();
+    Switch getLeftBumper();
 
-    public abstract Switch getRightBumper();
+    Switch getRightBumper();
 
-    public abstract Switch getA();
+    Switch getA();
 
-    public abstract Switch getB();
+    Switch getB();
 
-    public abstract Switch getX();
+    Switch getX();
 
-    public abstract Switch getY();
+    Switch getY();
 
-    public abstract Switch getStart();
+    Switch getStart();
 
-    public abstract Switch getSelect();
+    Switch getSelect();
 
-    public abstract Switch getLeftStick();
+    Switch getLeftStick();
 
-    public abstract Switch getRightStick();
+    Switch getRightStick();
 
-    public abstract void setRumble(double left, double right);
+    void setRumble(double left, double right);
 
-    public static Gamepad create(IntToDoubleFunction axisToValue, IntToBooleanFunction buttonNumberToSwitch,
-                                 IntToIntFunction dPad, ContinuousRange leftX, ContinuousRange leftY, ContinuousRange rightX, ContinuousRange rightY,
-                                 ContinuousRange leftTrigger, ContinuousRange rightTrigger, Switch leftBumper, Switch rightBumper, Switch buttonA,
-                                 Switch buttonB, Switch buttonX, Switch buttonY, Switch startButton, Switch selectButton, Switch leftStick,
-                                 Switch rightStick, BiConsumer<Double, Double> rumbler) {
+    static Gamepad create(IntToDoubleFunction axisToValue, IntToBooleanFunction buttonNumberToSwitch,
+                          IntToIntFunction dPad, ContinuousRange leftX, ContinuousRange leftY, ContinuousRange rightX, ContinuousRange rightY,
+                          ContinuousRange leftTrigger, ContinuousRange rightTrigger, Switch leftBumper, Switch rightBumper, Switch buttonA,
+                          Switch buttonB, Switch buttonX, Switch buttonY, Switch startButton, Switch selectButton, Switch leftStick,
+                          Switch rightStick, BiConsumer<Double, Double> rumbler) {
         return new Gamepad() {
             @Override
             public ContinuousRange getAxis(int axis) {

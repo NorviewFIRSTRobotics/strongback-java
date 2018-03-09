@@ -16,9 +16,8 @@
 
 package org.strongback.components;
 
+import edu.wpi.first.wpilibj.RobotController;
 import org.strongback.StrongbackRequirementException;
-
-import edu.wpi.first.wpilibj.Utility;
 
 /**
  * The system that provides information about match time.
@@ -33,14 +32,14 @@ public interface Clock {
      *
      * @return the elapsed time, in microseconds
      */
-    public long currentTimeInMicros();
+    long currentTimeInMicros();
 
     /**
      * Return the current time, in nanoseconds.
      *
      * @return the elapsed time, in nanoseconds
      */
-    default public long currentTimeInNanos() {
+    default long currentTimeInNanos() {
         return currentTimeInMicros() * 1000;
     }
 
@@ -49,7 +48,7 @@ public interface Clock {
      *
      * @return the elapsed time, in milliseconds
      */
-    default public long currentTimeInMillis() {
+    default long currentTimeInMillis() {
         return (long) (currentTimeInMicros() / 1000.0);
     }
 
@@ -60,11 +59,11 @@ public interface Clock {
      * @return the FPGA-based clock; never null
      * @throws StrongbackRequirementException if the FPGA hardware is not available
      */
-    public static Clock fpga() {
+    static Clock fpga() {
         try {
-            Utility.getFPGATime();
+            RobotController.getFPGATime();
             // If we're here, then the method did not throw an exception and there is FPGA hardware on this platform ...
-            return Utility::getFPGATime;
+            return RobotController::getFPGATime;
         } catch (UnsatisfiedLinkError | NoClassDefFoundError e) {
             throw new StrongbackRequirementException("Missing FPGA hardware or software", e);
         }
@@ -75,7 +74,7 @@ public interface Clock {
      *
      * @return the FPGA-based clock or (if that is not available) the system clock; never null
      */
-    public static Clock fpgaOrSystem() {
+    static Clock fpgaOrSystem() {
         try {
             return fpga();
         } catch (StrongbackRequirementException e) {
@@ -97,7 +96,7 @@ public interface Clock {
      *
      * @return the system clock; never null
      */
-    public static Clock system() {
+    static Clock system() {
         return new Clock() {
             @Override
             public long currentTimeInMicros() {

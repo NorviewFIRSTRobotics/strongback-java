@@ -35,7 +35,7 @@ public interface Controller extends Requirable {
      *
      * @return <code>true</code> if enabled, or <code>false</code> otherwise
      */
-    public boolean isEnabled();
+    boolean isEnabled();
 
     /**
     * Enable this controller so that it does read inputs, compute errors, and generate outputs when {@link #computeOutput()} is
@@ -43,7 +43,7 @@ public interface Controller extends Requirable {
     *
     * @return this object so that methods can be chained; never null
     */
-   public Controller enable();
+    Controller enable();
 
    /**
     * Disable this controller to <em>not</em> read inputs, compute errors, and generate outputs when {@link #computeOutput()}
@@ -51,20 +51,20 @@ public interface Controller extends Requirable {
     *
     * @return this object so that methods can be chained; never null
     */
-   public Controller disable();
+   Controller disable();
 
     /**
      * Get the current measured value for this controller.
      * @return the current value
      */
-    public double getValue();
+    double getValue();
 
     /**
      * Get the target value for this controller.
      * @return the target value
      * @see #withTarget(double)
      */
-    public double getTarget();
+    double getTarget();
 
     /**
      * Sets the target value for this controller.
@@ -73,7 +73,7 @@ public interface Controller extends Requirable {
      * @return this object so that methods can be chained; never null
      * @see #getTarget()
      */
-    public Controller withTarget(double target);
+    Controller withTarget(double target);
 
     /**
      * Sets the absolute tolerance for this controller.
@@ -82,14 +82,14 @@ public interface Controller extends Requirable {
      * @return this object so that methods can be chained; never null
      * @see #getTolerance()
      */
-    public Controller withTolerance(double tolerance);
+    Controller withTolerance(double tolerance);
 
     /**
      * Get the absolute tolerance for this controller.
      * @return the target value
      * @see #withTolerance(double)
      */
-    public double getTolerance();
+    double getTolerance();
 
     /**
      * Determines whether the supplied value is within the {@link #getTolerance() tolerance} of the {@link #getTarget() target}.
@@ -97,7 +97,7 @@ public interface Controller extends Requirable {
      * @param value the proposed value
      * @return <code>true</code> if the proposed value is within the tolerance of the target, or <code>false</code> otherwise
      */
-    public default boolean checkTolerance(double value) {
+    default boolean checkTolerance(double value) {
         return Math.abs(getTarget() - value) < getTolerance();
     }
 
@@ -107,7 +107,7 @@ public interface Controller extends Requirable {
      *
      * @return <code>true</code> if the current value is within the tolerance of the target, or <code>false</code> otherwise
      */
-    public default boolean isWithinTolerance() {
+    default boolean isWithinTolerance() {
         return checkTolerance(getValue());
     }
 
@@ -119,14 +119,14 @@ public interface Controller extends Requirable {
      *         setpoint, or <code>false</code> if this controller is not {@link #isEnabled() enabled} or has not yet reached the
      *         setpoint given the tolerance
      */
-    public boolean computeOutput();
+    boolean computeOutput();
 
     /**
      * Reset any error values stored from previous {@link #computeOutput() executions}.
      *
      * @return this object so that methods can be chained; never null
      */
-    public Controller reset();
+    Controller reset();
 
     /**
      * Return whether the {@link Executable} instance returned by {@link #executable()} does anything useful. Software-based
@@ -134,7 +134,7 @@ public interface Controller extends Requirable {
      * @return <code>true</code> if the {@link #executable()} does useful work and enables the controller to operate
      * continually and automatically, or <code>false</code> if the {@link #executable()} does nothing.
      */
-    public default boolean hasExecutable() {
+    default boolean hasExecutable() {
         return true;
     }
 
@@ -148,6 +148,6 @@ public interface Controller extends Requirable {
      * @return the {@link Executable} object that can be registered with an {@link Executor} (typically Strongback's
      *         {@link Strongback#executor() central executor}); never null and always the same instance for this controller
      */
-    public Executable executable();
+    Executable executable();
 
 }

@@ -297,7 +297,7 @@ public final class Strongback {
      * periods.
      */
     @FunctionalInterface
-    public static interface ExcessiveExecutionHandler {
+    public interface ExcessiveExecutionHandler {
         /**
          * Notification that a cycle of Strongback's executor took longer than was prescribed in the configuration.
          *
@@ -559,24 +559,11 @@ public final class Strongback {
             return this;
         }
 
-        /**
-         * This method no longer does anything.
-         * <p>
-         * Be sure to call {@link Strongback#start()} or {@link Strongback#restart()} during
-         * {@link edu.wpi.first.wpilibj.IterativeRobot#teleopInit()} and
-         * {@link edu.wpi.first.wpilibj.IterativeRobot#autonomousInit()}, and either {@link Strongback#stop()} or
-         * {@link Strongback#disable()} during {@link edu.wpi.first.wpilibj.IterativeRobot#disabledInit()}.
-         *
-         * @deprecated this is no longer needed and does nothing
-         */
-        @Deprecated
-        public synchronized void initialize() {
-        }
     }
 
     /**
      * Get the Strongback library configurator. Any configuration changes will take effect only after the
-     * {@link Configurator#initialize()} method is called.
+     * {@link Configurator#start()} method is called.
      *
      * @return the configuration; never null
      */
@@ -1050,9 +1037,7 @@ public final class Strongback {
             this.dataWriterFactorySupplier = () -> {
                 // Create the data writer factory ...
                 int writesPerSecond = (int) (((double) TimeUnit.SECONDS.toNanos(1)) / executionPeriodInMillis);
-                return (channels) -> {
-                    return new FileDataWriter(channels, filenameGenerator, writesPerSecond, estimatedTotalNumberOfSeconds);
-                };
+                return (channels) -> new FileDataWriter(channels, filenameGenerator, writesPerSecond, estimatedTotalNumberOfSeconds);
             };
             this.dataWriterDescription = filenameGenerator + " (sized for " + estimatedTotalNumberOfSeconds + " seconds)";
             return true;

@@ -127,8 +127,8 @@ public class CommandGroup extends Command {
         return new CommandGroup(commands,Type.PARRALLEL);
     }
 
-    static enum Type {
-        SEQUENTIAL, PARRALLEL, FORK;
+    enum Type {
+        SEQUENTIAL, PARRALLEL, FORK
     }
 
     private CommandGroup root;

@@ -106,9 +106,9 @@ final class ExecutorDriver implements Stoppable {
 
     private void run() {
         try {
-            long startTimeInMillis = 0L;
-            long stopTimeInMillis = 0L;
-            long nextTimeInMillis = 0L;
+            long startTimeInMillis;
+            long stopTimeInMillis;
+            long nextTimeInMillis;
             int loopsUntilNextMediumPriority = mediumPriorityFrequency;
             int loopsUntilNextLowPriority = lowPriorityFrequency;
 
@@ -127,42 +127,18 @@ final class ExecutorDriver implements Stoppable {
                 startTimeInMillis = timeSystem.currentTimeInMillis();
 
                 // First execute the HIGH priority items ...
-                for (int i=0; i!=numHighPriorityItems; ++i) {
-                    Executable executable = highPriorityItems[i];
-                    if (!running) return;
-                    try {
-                        executable.execute(timeSystem.currentTimeInMillis());
-                    } catch (Throwable e) {
-                        logger.error(e);
-                    }
-                }
+                if (execute(highPriorityItems, numHighPriorityItems)) return;
 
                 // Execute the MEDIUM priority items every other time ...
                 if (loopsUntilNextMediumPriority <= 0) {
-                    for (int i=0; i!=numMediumPriorityItems; ++i) {
-                        Executable executable = mediumPriorityItems[i];
-                        if (!running) return;
-                        try {
-                            executable.execute(timeSystem.currentTimeInMillis());
-                        } catch (Throwable e) {
-                            logger.error(e);
-                        }
-                    }
+                    if (execute(mediumPriorityItems, numMediumPriorityItems)) return;
                     // Reset the counter ...
                     loopsUntilNextMediumPriority = mediumPriorityFrequency;
                 }
 
                 // Execute the LOW priority items every `lowPriorityFrequency` times ...
                 if (loopsUntilNextLowPriority <= 0) {
-                    for (int i=0; i!=numLowPriorityItems; ++i) {
-                        Executable executable = lowPriorityItems[i];
-                        if (!running) return;
-                        try {
-                            executable.execute(timeSystem.currentTimeInMillis());
-                        } catch (Throwable e) {
-                            logger.error(e);
-                        }
-                    }
+                    if (execute(lowPriorityItems, numLowPriorityItems)) return;
                     // Reset the counter ...
                     loopsUntilNextLowPriority = lowPriorityFrequency;
                 }
@@ -185,6 +161,19 @@ final class ExecutorDriver implements Stoppable {
             CountDownLatch latch = stopped;
             if (latch != null) latch.countDown();
         }
+    }
+
+    private boolean execute(Executable[] highPriorityItems, int numHighPriorityItems) {
+        for (int i=0; i!=numHighPriorityItems; ++i) {
+            Executable executable = highPriorityItems[i];
+            if (!running) return true;
+            try {
+                executable.execute(timeSystem.currentTimeInMillis());
+            } catch (Throwable e) {
+                logger.error(e);
+            }
+        }
+        return false;
     }
 
     private static void noDelay(long actual, long desired) {

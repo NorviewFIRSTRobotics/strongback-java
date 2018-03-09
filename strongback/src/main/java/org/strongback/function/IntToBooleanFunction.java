@@ -36,5 +36,5 @@ public interface IntToBooleanFunction {
      * @param value the function argument
      * @return the function result
      */
-    public boolean applyAsBoolean(int value);
+    boolean applyAsBoolean(int value);
 }

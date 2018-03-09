@@ -30,13 +30,13 @@ public interface Solenoid extends Requirable {
     /**
      * The direction of the solenoid.
      */
-    static enum Direction {
+    enum Direction {
         /** The solenoid is extending. */
         EXTENDING,
         /** The solenoid is retracting. */
         RETRACTING,
         /** The solenoid is stopped. */
-        STOPPED;
+        STOPPED
     }
 
     /**

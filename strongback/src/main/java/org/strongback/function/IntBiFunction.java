@@ -37,5 +37,5 @@ public interface IntBiFunction {
      * @param u the second function argument
      * @return the function result
      */
-    public int applyAsInt(int t, int u);
+    int applyAsInt(int t, int u);
 }

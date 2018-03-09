@@ -16,19 +16,19 @@
 
 package org.strongback;
 
+import org.strongback.annotation.ThreadSafe;
+import org.strongback.components.Clock;
+
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.strongback.annotation.ThreadSafe;
-import org.strongback.components.Clock;
-
 /**
  * A thread-safe and lock-free {@link EventRecorder} implementation that records all events to a thread-safe queue and then when
  * {@link #execute(long) executed} writes all enqueued events in the same order as received. The {@link AsyncEventRecorder} is
- * {@link Executable}, and is designed to be {@link Executor#register(Executable) registered} with an {@link Executor} to
+ * {@link Executable}, and is designed to be {@link Executor#register(Executable, Executor.Priority) registered} with an {@link Executor} to
  * automatically and periodically write the enqueued events to the given {@link EventWriter}.
  *
  * @author Randall Hauch
@@ -57,37 +57,37 @@ final class AsyncEventRecorder implements EventRecorder {
         }
     }
 
-    protected static interface EventWriter extends AutoCloseable {
+    protected interface EventWriter extends AutoCloseable {
         /**
          * Record a new type of event.
          *
          * @param timeInMillis the time (in milliseconds) of the event
-         * @param newType the event information; never null
+         * @param newType      the event information; never null
          */
-        public void recordEventType(long timeInMillis, EventType newType);
+        void recordEventType(long timeInMillis, EventType newType);
 
         /**
          * Record an event with the specified {@link EventType#typeNumber() event type number} and String value. Before this
          * method is called, {@link #recordEventType(long, EventType)} will have been called for the given type of event
          *
          * @param timeInMillis the time (in milliseconds) of the event
-         * @param eventType the type of event
-         * @param value the event value
+         * @param eventType    the type of event
+         * @param value        the event value
          */
-        public void recordEvent(long timeInMillis, int eventType, String value);
+        void recordEvent(long timeInMillis, int eventType, String value);
 
         /**
          * Record an event with the specified {@link EventType#typeNumber() event type number} and integer value. Before this
          * method is called, {@link #recordEventType(long, EventType)} will have been called for the given type of event
          *
          * @param timeInMillis the time (in milliseconds) of the event
-         * @param eventType the type of event
-         * @param value the event value
+         * @param eventType    the type of event
+         * @param value        the event value
          */
-        public void recordEvent(long timeInMillis, int eventType, int value);
+        void recordEvent(long timeInMillis, int eventType, int value);
 
         @Override
-        public void close();
+        void close();
     }
 
     private final ConcurrentMap<String, EventType> eventTypes = new ConcurrentHashMap<>();
@@ -130,8 +130,8 @@ final class AsyncEventRecorder implements EventRecorder {
     }
 
     @FunctionalInterface
-    protected static interface Event {
-        public void write(EventWriter writer);
+    protected interface Event {
+        void write(EventWriter writer);
     }
 
     protected static final class QueuedWriter implements EventWriter, Executable {
@@ -160,7 +160,7 @@ final class AsyncEventRecorder implements EventRecorder {
 
         @Override
         public void close() {
-            queue.offer(writer -> writer.close());
+            queue.offer(EventWriter::close);
         }
 
         @Override

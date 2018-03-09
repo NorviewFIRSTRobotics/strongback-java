@@ -35,7 +35,7 @@ public interface Compass extends AngleSensor {
      *
      * @return the heading of this {@link Compass}
      */
-    public default double getHeading() {
+    default double getHeading() {
         double positiveOrNegative = getAngle() % 360;
         return positiveOrNegative >= 0 ? positiveOrNegative : 360 + positiveOrNegative;
     }
@@ -50,7 +50,7 @@ public interface Compass extends AngleSensor {
      * @return the angular displacement required for this sensor to reach the target heading, or 0.0d if the two headings are
      *         already within the specified {@code tolerance}
      */
-    default public double computeHeadingChangeTo(double targetHeading, double tolerance) {
+    default double computeHeadingChangeTo(double targetHeading, double tolerance) {
         double diff = targetHeading - this.getHeading();
         return Math.abs(diff) <= Math.abs(tolerance) ? 0.0 : diff;
     }
@@ -61,7 +61,7 @@ public interface Compass extends AngleSensor {
      * @param angleSupplier the function that returns the angle; may not be null
      * @return the angle sensor
      */
-    public static Compass create(DoubleSupplier angleSupplier) {
+    static Compass create(DoubleSupplier angleSupplier) {
         return new Compass() {
             private volatile double zero = 0;
 

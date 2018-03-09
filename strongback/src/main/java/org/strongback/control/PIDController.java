@@ -39,13 +39,13 @@ public interface PIDController extends Controller {
     /**
      * The profile that is typically enabled by default.
      */
-    public static int DEFAULT_PROFILE = 0;
+    int DEFAULT_PROFILE = 0;
 
     @Override
-    public PIDController withTarget(double target);
+    PIDController withTarget(double target);
 
     @Override
-    public PIDController withTolerance(double tolerance);
+    PIDController withTolerance(double tolerance);
 
     /**
      * Set the control gains on this controller's current profile.
@@ -55,7 +55,7 @@ public interface PIDController extends Controller {
      * @param d the differential gain
      * @return this object so that methods can be chained; never null
      */
-    public default PIDController withGains(double p, double i, double d) {
+    default PIDController withGains(double p, double i, double d) {
         return withGains(p, i, d, 0.0);
     }
 
@@ -68,7 +68,7 @@ public interface PIDController extends Controller {
      * @param feedForward the feed-forward gain
      * @return this object so that methods can be chained; never null
      */
-    public default PIDController withGains(double p, double i, double d, double feedForward) {
+    default PIDController withGains(double p, double i, double d, double feedForward) {
         return withProfile(getCurrentProfile(), p, i, d, 0.0);
     }
 
@@ -77,7 +77,7 @@ public interface PIDController extends Controller {
      *
      * @return the profile numbers; never null and never empty.
      */
-    public Set<Integer> getProfiles();
+    Set<Integer> getProfiles();
 
     /**
      * Set the control gains for the specified profile, which may or may not be the current profile. Profile numbers start from
@@ -92,7 +92,7 @@ public interface PIDController extends Controller {
      * @return this object so that methods can be chained; never null
      * @throws IllegalArgumentException if the profile name is null
      */
-    public default PIDController withProfile(int profile, double p, double i, double d) {
+    default PIDController withProfile(int profile, double p, double i, double d) {
         return withProfile(profile,p,i,d,0.0);
     }
 
@@ -108,21 +108,21 @@ public interface PIDController extends Controller {
      * @param feedForward the feed-forward gain
      * @return this object so that methods can be chained; never null
      */
-    public PIDController withProfile(int profile, double p, double i, double d, double feedForward);
+    PIDController withProfile(int profile, double p, double i, double d, double feedForward);
 
     /**
      * Get the current profile. The default profile is {@value #DEFAULT_PROFILE}.
      *
      * @return the current profile number; never null
      */
-    public int getCurrentProfile();
+    int getCurrentProfile();
 
     /**
      * Get the gains of the current profile.
      *
      * @return the current profile gains; never null
      */
-    public Gains getGainsForCurrentProfile();
+    Gains getGainsForCurrentProfile();
 
     /**
      * Use the profile with the given name.
@@ -131,39 +131,39 @@ public interface PIDController extends Controller {
      * @return this object so that methods can be chained; never null
      * @throws IllegalArgumentException if the profile does not exist
      */
-    public PIDController useProfile(int profile);
+    PIDController useProfile(int profile);
 
     /**
      * A set of gains.
      */
-    public static interface Gains {
+    interface Gains {
 
         /**
          * Get the proportional gain.
          *
          * @return the proportional gain.
          */
-        public double getP();
+        double getP();
 
         /**
          * Get the integral gain.
          *
          * @return the integral gain.
          */
-        public double getI();
+        double getI();
 
         /**
          * Get the differential gain.
          *
          * @return the differential gain.
          */
-        public double getD();
+        double getD();
 
         /**
          * Get the feed forward gain.
          *
          * @return the feed forward gain.
          */
-        public double getFeedForward();
+        double getFeedForward();
     }
 }

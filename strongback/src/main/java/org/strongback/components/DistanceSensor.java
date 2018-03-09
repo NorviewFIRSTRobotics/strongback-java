@@ -34,7 +34,7 @@ public interface DistanceSensor extends Zeroable {
      * @return the value of this {@link DistanceSensor}
      * @see #getDistanceInFeet()
      */
-    public double getDistanceInInches();
+    double getDistanceInInches();
 
     /**
      * Gets the current value of this {@link DistanceSensor} in feet.
@@ -42,12 +42,12 @@ public interface DistanceSensor extends Zeroable {
      * @return the value of this {@link DistanceSensor}
      * @see #getDistanceInInches()
      */
-    default public double getDistanceInFeet() {
+    default double getDistanceInFeet() {
         return getDistanceInInches() / 12.0;
     }
 
     @Override
-    default public DistanceSensor zero() {
+    default DistanceSensor zero() {
         return this;
     }
 
@@ -57,7 +57,7 @@ public interface DistanceSensor extends Zeroable {
      * @param distanceSupplier the function that returns the distance; may not be null
      * @return the angle sensor
      */
-    public static DistanceSensor create(DoubleSupplier distanceSupplier) {
+    static DistanceSensor create(DoubleSupplier distanceSupplier) {
         return new DistanceSensor() {
             private double zero = 0;
 
@@ -80,7 +80,7 @@ public interface DistanceSensor extends Zeroable {
      * @param sensor the {@link DistanceSensor} to invert
      * @return an {@link DistanceSensor} that reads the negated distance of the original sensor
      */
-    public static DistanceSensor invert(DistanceSensor sensor) {
+    static DistanceSensor invert(DistanceSensor sensor) {
         return new DistanceSensor() {
             @Override
             public double getDistanceInInches() {

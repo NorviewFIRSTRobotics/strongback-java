@@ -31,14 +31,14 @@ import org.strongback.annotation.Experimental;
 public interface TalonSRX extends LimitedMotor {
 
     @Override
-    public TalonSRX setSpeed(double speed);
+    TalonSRX setSpeed(double speed);
 
     /**
      * Get the CAN device ID.
      *
      * @return the device ID.
      */
-    public int getDeviceID();
+    int getDeviceID();
 
     /**
      * <b>Deprecated.</b> Use {@link #getEncoderInput()} instead.
@@ -49,7 +49,7 @@ public interface TalonSRX extends LimitedMotor {
      * @deprecated Use {@link #getEncoderInput()} instead.
      */
     @Deprecated
-    public default AngleSensor getAngleSensor() {
+    default AngleSensor getAngleSensor() {
         return getEncoderInput();
     }
 
@@ -61,7 +61,7 @@ public interface TalonSRX extends LimitedMotor {
      * @see org.strongback.hardware.Hardware.Motors#talonSRX(int, double)
      * @see org.strongback.hardware.Hardware.Motors#talonSRX(int, double, double)
      */
-    public Gyroscope getEncoderInput();
+    Gyroscope getEncoderInput();
 
     /**
      * Get the current analog angle and rate, regardless of whether it is the current feedback device.
@@ -71,7 +71,7 @@ public interface TalonSRX extends LimitedMotor {
      * @see org.strongback.hardware.Hardware.Motors#talonSRX(int, double)
      * @see org.strongback.hardware.Hardware.Motors#talonSRX(int, double, double)
      */
-    public Gyroscope getAnalogInput();
+    Gyroscope getAnalogInput();
 
     /**
      * Get the input angle and rate of the current {@link #setFeedbackDevice(FeedbackDevice) feedback device}.
@@ -79,35 +79,35 @@ public interface TalonSRX extends LimitedMotor {
      * @return the selected input device sensor; never null, but it may return a meaningless value if a sensor is not physically
      * wired as an input to the Talon device
      */
-    public Gyroscope getSelectedSensor();
+    Gyroscope getSelectedSensor();
 
     /**
      * Get the Talon SRX's output current sensor.
      *
      * @return the output current sensor; never null
      */
-    public CurrentSensor getCurrentSensor();
+    CurrentSensor getCurrentSensor();
 
     /**
      * Get the Talon SRX's output voltage sensor.
      *
      * @return the output voltage sensor; never null
      */
-    public VoltageSensor getVoltageSensor();
+    VoltageSensor getVoltageSensor();
 
     /**
      * Get the Talon SRX's bus voltage.
      *
      * @return the bus voltage sensor; never null
      */
-    public VoltageSensor getBusVoltageSensor();
+    VoltageSensor getBusVoltageSensor();
 
     /**
      * Get the Talon SRX's temperature sensor.
      *
      * @return the temperature sensor; never null
      */
-    public TemperatureSensor getTemperatureSensor();
+    TemperatureSensor getTemperatureSensor();
 
     /**
      * Set the feedback device for this controller.
@@ -116,7 +116,7 @@ public interface TalonSRX extends LimitedMotor {
      * @return this object so that methods can be chained; never null
      * @see #reverseSensor(boolean)
      */
-    public TalonSRX setFeedbackDevice(FeedbackDevice device);
+    TalonSRX setFeedbackDevice(FeedbackDevice device);
 
     /**
      * Set the status frame rate for this controller.
@@ -125,7 +125,7 @@ public interface TalonSRX extends LimitedMotor {
      * @param periodMillis frame rate period in milliseconds
      * @return this object so that methods can be chained; never null
      */
-    public TalonSRX setStatusFrameRate(StatusFrameRate frameRate, int periodMillis);
+    TalonSRX setStatusFrameRate(StatusFrameRate frameRate, int periodMillis);
 
     /**
      * Flips the sign (multiplies by negative one) the {@link #setFeedbackDevice(FeedbackDevice) feedback device} values read by
@@ -137,7 +137,7 @@ public interface TalonSRX extends LimitedMotor {
      * @param flip <code>true</code> if sensor input should be flipped, or <code>false</code> if not.
      * @return this object so that methods can be chained; never null
      */
-    public TalonSRX reverseSensor(boolean flip);
+    TalonSRX reverseSensor(boolean flip);
 
     /**
      * Set the soft limit for the forward throttle, in terms of the angle as measured by the {@link #getSelectedSensor()
@@ -155,7 +155,7 @@ public interface TalonSRX extends LimitedMotor {
      * @return this object so that methods can be chained; never null
      * @see #enableForwardSoftLimit(boolean)
      */
-    public TalonSRX setForwardSoftLimit(int forwardLimitInDegrees);
+    TalonSRX setForwardSoftLimit(int forwardLimitInDegrees);
 
     /**
      * Set the soft limit for the reverse throttle, in terms of the angle as measured by the {@link #getSelectedSensor()
@@ -173,7 +173,7 @@ public interface TalonSRX extends LimitedMotor {
      * @return this object so that methods can be chained; never null
      * @see #enableForwardSoftLimit(boolean)
      */
-    public TalonSRX setReverseSoftLimit(int reverseLimitInDegrees);
+    TalonSRX setReverseSoftLimit(int reverseLimitInDegrees);
 
     /**
      * Enable the soft limit for forward throttle, which is set via the {@link #setForwardSoftLimit(int)}.
@@ -182,7 +182,7 @@ public interface TalonSRX extends LimitedMotor {
      * @return this object so that methods can be chained; never null
      * @see #setForwardLimitSwitchNormallyOpen(boolean)
      */
-    public TalonSRX enableForwardSoftLimit(boolean enable);
+    TalonSRX enableForwardSoftLimit(boolean enable);
 
     /**
      * Enable the soft limit for reverse throttle, which is set via the {@link #setReverseSoftLimit(int)}.
@@ -191,7 +191,7 @@ public interface TalonSRX extends LimitedMotor {
      * @return this object so that methods can be chained; never null
      * @see #setReverseLimitSwitchNormallyOpen(boolean)
      */
-    public TalonSRX enableReverseSoftLimit(boolean enable);
+    TalonSRX enableReverseSoftLimit(boolean enable);
 
     /**
      * Enable the forward and reverse limit switches.
@@ -199,7 +199,7 @@ public interface TalonSRX extends LimitedMotor {
      * @param enabled <code>true</code> if the reverse limit is to be enabled, or <code>false</code> otherwise
      * @return this object so that methods can be chained; never null
      */
-    public TalonSRX enableLimitSwitch(boolean enabled);
+    TalonSRX enableLimitSwitch(boolean enabled);
 
     /**
      * Configure the forward limit switch to be normally open or normally closed. Talon will disable momentarily if the Talon's
@@ -210,7 +210,7 @@ public interface TalonSRX extends LimitedMotor {
      * @param normallyOpen <code>true</code> for normally open, or <code>false</code> for normally closed.
      * @return this object so that methods can be chained; never null
      */
-    public TalonSRX setForwardLimitSwitchNormallyOpen(boolean normallyOpen);
+    TalonSRX setForwardLimitSwitchNormallyOpen(boolean normallyOpen);
 
     /**
      * Configure the reverse limit switch to be normally open or normally closed. Talon will disable momentarily if the Talon's
@@ -221,7 +221,7 @@ public interface TalonSRX extends LimitedMotor {
      * @param normallyOpen <code>true</code> for normally open, or <code>false</code> for normally closed.
      * @return this object so that methods can be chained; never null
      */
-    public TalonSRX setReverseLimitSwitchNormallyOpen(boolean normallyOpen);
+    TalonSRX setReverseLimitSwitchNormallyOpen(boolean normallyOpen);
 
     /**
      * Enable the brake mode.
@@ -229,7 +229,7 @@ public interface TalonSRX extends LimitedMotor {
      * @param brake <code>true</code> if the brake mode is to be enabled, or <code>false</code> otherwise
      * @return this object so that methods can be chained; never null
      */
-    public TalonSRX enableBrakeMode(boolean brake);
+    TalonSRX enableBrakeMode(boolean brake);
 
     /**
      * The Talon SRX can be set to honor a ramp rate to prevent instantaneous changes in throttle. This ramp rate is in effect
@@ -239,7 +239,7 @@ public interface TalonSRX extends LimitedMotor {
      * @param rampRate maximum change in voltage per second, in volts / second
      * @return this object so that methods can be chained; never null
      */
-    public TalonSRX setVoltageRampRate(double rampRate);
+    TalonSRX setVoltageRampRate(double rampRate);
 
     /**
      * Get the faults currently associated with the Talon controller. These state of these faults may change at any time based
@@ -248,7 +248,7 @@ public interface TalonSRX extends LimitedMotor {
      * @return the current faults; never null
      * @see #stickyFaults()
      */
-    public Faults faults();
+    Faults faults();
 
     /**
      * Get the sticky faults associated with the Talon controller. Once these faults are triggered, they are only reset with
@@ -256,21 +256,20 @@ public interface TalonSRX extends LimitedMotor {
      *
      * @return the sticky faults; never null
      * @see #faults()
-     * @see #clearStickyFaults()
      */
-    public Faults stickyFaults();
+    Faults stickyFaults();
 
     /**
      * Get the firmware version.
      *
      * @return the version of the firmware running on the Talon
      */
-    public long getFirmwareVersion();
+    long getFirmwareVersion();
 
     /**
      * The type of feedback sensor used by this Talon controller.
      */
-    public enum FeedbackDevice {
+    enum FeedbackDevice {
         NONE(-1),
         /**
          * Use Quadrature Encoder.
@@ -326,7 +325,7 @@ public interface TalonSRX extends LimitedMotor {
             return null;
         }
 
-        private FeedbackDevice(int value) {
+        FeedbackDevice(int value) {
             this.value = value;
         }
 
@@ -338,7 +337,7 @@ public interface TalonSRX extends LimitedMotor {
     /**
      * Types of status frame rates.
      */
-    public enum StatusFrameRate {
+    enum StatusFrameRate {
         /**
          * The General Status frame has a default period of 10ms, and provides:
          * <ul>
@@ -409,7 +408,7 @@ public interface TalonSRX extends LimitedMotor {
             return null;
         }
 
-        private StatusFrameRate(int value) {
+        StatusFrameRate(int value) {
             this.value = value;
         }
 
@@ -418,7 +417,7 @@ public interface TalonSRX extends LimitedMotor {
         }
     }
 
-    public static class StickyFaultsWrapper implements Faults {
+    class StickyFaultsWrapper implements Faults {
         private com.ctre.phoenix.motorcontrol.StickyFaults faults;
 
         public StickyFaultsWrapper(com.ctre.phoenix.motorcontrol.can.TalonSRX talonSRX) {
@@ -457,7 +456,7 @@ public interface TalonSRX extends LimitedMotor {
         }
     }
 
-    public static class FaultsWrapper implements Faults {
+    class FaultsWrapper implements Faults {
         private com.ctre.phoenix.motorcontrol.Faults faults;
 
         public FaultsWrapper(com.ctre.phoenix.motorcontrol.can.TalonSRX talonSRX) {
@@ -499,7 +498,7 @@ public interface TalonSRX extends LimitedMotor {
     /**
      * The set of possible faults that this module can trigger.
      */
-    public static interface Faults {
+    interface Faults {
 
         /**
          * The switch that is {@link Switch#isTriggered() triggered} when the voltage is too low.

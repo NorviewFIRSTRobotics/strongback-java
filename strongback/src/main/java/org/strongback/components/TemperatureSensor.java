@@ -29,13 +29,13 @@ public interface TemperatureSensor {
      *
      * @return the current temperature in Celsius
      */
-    public double getTemperatureInCelsius();
+    double getTemperatureInCelsius();
     /**
      * Gets the current temperature in degrees Fahrenheit.
      *
      * @return the current temperature in Fahrenheit
      */
-    default public double getTemperatureInFahrenheit() {
+    default double getTemperatureInFahrenheit() {
         return getTemperatureInCelsius() * 9.0/5.0 + 32.0;
     }
 }

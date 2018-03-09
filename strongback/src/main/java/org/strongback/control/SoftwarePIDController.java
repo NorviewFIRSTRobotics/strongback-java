@@ -81,12 +81,13 @@ import java.util.function.Supplier;
  * @author Randall Hauch
  */
 @ThreadSafe
+@Deprecated
 public class SoftwarePIDController implements LiveWindowSendable, PIDController {
 
     public static int DEFAULT_PROFILE = 0;
 
     public enum SourceType {
-        DISTANCE, RATE;
+        DISTANCE, RATE
     }
 
     private final DoubleSupplier source;
@@ -103,18 +104,8 @@ public class SoftwarePIDController implements LiveWindowSendable, PIDController 
     private volatile double prevError = 0.0d;
     private volatile double result = 0.0d;
     private volatile ITable table;
-    private final Executable executable = new Executable() {
-        @Override
-        public void execute(long timeInMillis) {
-            computeOutput();
-        }
-    };
-    private final ITableListener listener = new ITableListener() {
-        @Override
-        public void valueChanged(ITable table, String key, Object value, boolean isNew) {
-            SoftwarePIDController.this.valueChanged(table, key, value, isNew);
-        }
-    };
+    private final Executable executable = timeInMillis -> computeOutput();
+    private final ITableListener listener = (table, key, value, isNew) -> SoftwarePIDController.this.valueChanged(table, key, value, isNew);
 
     /**
      * Create a new PID+FF controller that uses the supplied source for inputs and sends outputs to the supplied consumer.
@@ -572,7 +563,7 @@ public class SoftwarePIDController implements LiveWindowSendable, PIDController 
             this.i = i;
             this.d = d;
             this.feedForward = feedForward;
-        };
+        }
 
         @Override
         public double getP() {
@@ -681,33 +672,41 @@ public class SoftwarePIDController implements LiveWindowSendable, PIDController 
     }
 
     protected void valueChanged(ITable table, String key, Object value, boolean isNew) {
-        if (key.equals("profile")) {
-            int profile = (int) table.getNumber("profile", 0);
-            if (gainsByProfile.containsKey(profile)) {
-                useProfile(profile);
-            }
-        } else if (key.equals("p") || key.equals("i") || key.equals("d") || key.equals("f")) {
-            Gains gains = this.gains;
-            if (gains.p != table.getNumber("p", 0.0) || gains.i != table.getNumber("i", 0.0)
-                    || gains.d != table.getNumber("d", 0.0) || gains.feedForward != table.getNumber("f", 0.0)) {
-                withGains(table.getNumber("p", 0.0),
-                          table.getNumber("i", 0.0),
-                          table.getNumber("d", 0.0),
-                          table.getNumber("f", 0.0));
-            }
-        } else if (key.equals("setpoint")) {
-            Target target = this.target;
-            if (target.setpoint != ((Double) value).doubleValue()) {
-                withTarget(((Double) value).doubleValue());
-            }
-        } else if (key.equals("enabled")) {
-            if (isEnabled() != ((Boolean) value).booleanValue()) {
-                if (((Boolean) value).booleanValue()) {
-                    enable();
-                } else {
-                    disable();
+        switch (key) {
+            case "profile":
+                int profile = (int) table.getNumber("profile", 0);
+                if (gainsByProfile.containsKey(profile)) {
+                    useProfile(profile);
                 }
-            }
+                break;
+            case "p":
+            case "i":
+            case "d":
+            case "f":
+                Gains gains = this.gains;
+                if (gains.p != table.getNumber("p", 0.0) || gains.i != table.getNumber("i", 0.0)
+                        || gains.d != table.getNumber("d", 0.0) || gains.feedForward != table.getNumber("f", 0.0)) {
+                    withGains(table.getNumber("p", 0.0),
+                            table.getNumber("i", 0.0),
+                            table.getNumber("d", 0.0),
+                            table.getNumber("f", 0.0));
+                }
+                break;
+            case "setpoint":
+                Target target = this.target;
+                if (target.setpoint != (Double) value) {
+                    withTarget((Double) value);
+                }
+                break;
+            case "enabled":
+                if (isEnabled() != (Boolean) value) {
+                    if ((Boolean) value) {
+                        enable();
+                    } else {
+                        disable();
+                    }
+                }
+                break;
         }
     }
 //

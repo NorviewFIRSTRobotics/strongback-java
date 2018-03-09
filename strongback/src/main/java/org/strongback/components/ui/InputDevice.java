@@ -31,19 +31,19 @@ public interface InputDevice {
      * @param axis the axis number
      * @return the analog axis, or null if there is no such axis
      */
-    public ContinuousRange getAxis(int axis);
+    ContinuousRange getAxis(int axis);
     /**
      * Get the button for the given number.
      * @param button the button number
      * @return the button, or null if there is no such button
      */
-    public Switch getButton(int button);
+    Switch getButton(int button);
     /**
      * Get the directional axis for the given D-pad number.
      * @param pad the pad number
      * @return the directional axis, or null if there is no such axis for the given D-pad number
      */
-    public DirectionalAxis getDPad(int pad);
+    DirectionalAxis getDPad(int pad);
 
     /**
      * Create an input device from the supplied mapping functions.
@@ -52,7 +52,7 @@ public interface InputDevice {
      * @param padToValue the function that maps an integer to the directional axis output
      * @return the resulting input device; never null
      */
-    public static InputDevice create( IntToDoubleFunction axisToValue, IntToBooleanFunction buttonNumberToSwitch, IntToIntFunction padToValue ) {
+    static InputDevice create(IntToDoubleFunction axisToValue, IntToBooleanFunction buttonNumberToSwitch, IntToIntFunction padToValue) {
         return new InputDevice() {
             @Override
             public ContinuousRange getAxis(int axis) {

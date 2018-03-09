@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.Relay.Value;
 
 /**
  * Wrapper for the WPILib <code>Relay</code>, and which has no delay and thus is only
- * {@link org.CommandState.robot.component.Relay.State#ON} or {@link org.CommandState.robot.component.Relay.State#OFF}.
+ * {@link Relay.State#ON} or {@link Relay.State#OFF}.
  * This class cannot be constructed directly, use <code>HardwareFactory</code> to get instances of it.
  *
  * @author Zach Anderson

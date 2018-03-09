@@ -27,5 +27,5 @@ public interface Zeroable {
      * Change the output so that the current value is considered to be 0
      * @return this object to allow chaining of methods; never null
      */
-    public Zeroable zero();
+    Zeroable zero();
 }

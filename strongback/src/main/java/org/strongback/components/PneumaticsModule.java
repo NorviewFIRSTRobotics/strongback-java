@@ -26,21 +26,21 @@ public interface PneumaticsModule {
      *
      * @return the current sensor for the compressor; never null
      */
-    public CurrentSensor compressorCurrent();
+    CurrentSensor compressorCurrent();
 
     /**
      * Get the switch that reports whether the compressor is running.
      *
      * @return the compressor switch; never null
      */
-    public Switch compressorRunningSwitch();
+    Switch compressorRunningSwitch();
 
     /**
      * Get the switch that reports whether the pressure is below the lower threshold.
      *
      * @return the low pressure switch; never null
      */
-    public Switch lowPressureSwitch();
+    Switch lowPressureSwitch();
 
     /**
      * Get the relay that controls whether the module automatically runs the compressor when the {@link #lowPressureSwitch()} is
@@ -48,7 +48,7 @@ public interface PneumaticsModule {
      *
      * @return the automatic mode relay; never null
      */
-    public Relay automaticMode();
+    Relay automaticMode();
 
     /**
      * Get the faults currently associated with the compressor. These state of these faults may change at any time based upon
@@ -57,7 +57,7 @@ public interface PneumaticsModule {
      * @return the current faults; never null
      * @see #compressorStickyFaults()
      */
-    public Faults compressorFaults();
+    Faults compressorFaults();
 
     /**
      * Get the sticky faults associated with the compressor. Once these faults are triggered, they are only reset with
@@ -67,18 +67,18 @@ public interface PneumaticsModule {
      * @see #compressorFaults()
      * @see #clearStickyFaults()
      */
-    public Faults compressorStickyFaults();
+    Faults compressorStickyFaults();
 
     /**
      * Clear all {@link #compressorStickyFaults() sticky compressor faults} that may have been triggered.
      * @return this instance so that methods can be chained; never null
      */
-    public PneumaticsModule clearStickyFaults();
+    PneumaticsModule clearStickyFaults();
 
     /**
      * The set of possible faults that this module can trigger.
      */
-    public static interface Faults {
+    interface Faults {
 
         /**
          * The switch that is {@link Switch#isTriggered() triggered} when the compressor is not connected.

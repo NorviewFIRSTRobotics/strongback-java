@@ -29,7 +29,7 @@ public interface SolenoidWithPosition extends Solenoid {
     /**
      * The possible positions for a limited motor.
      */
-    public enum Position {
+    enum Position {
         /** The motor is fully extended. **/
         EXTENDED,
         /** The motor is fully retracted. **/
@@ -43,14 +43,14 @@ public interface SolenoidWithPosition extends Solenoid {
      *
      * @return the current position; never null
      */
-    public Position getPosition();
+    Position getPosition();
 
     /**
      * Determines if this <code>Solenoid</code> is extended.
      *
      * @return {@code true} if this solenoid is fully extended, or {@code false} otherwise
      */
-    default public boolean isExtended() {
+    default boolean isExtended() {
         return getPosition() == Position.EXTENDED;
     }
 
@@ -59,7 +59,7 @@ public interface SolenoidWithPosition extends Solenoid {
      *
      * @return {@code true} if this solenoid is fully retracted, or {@code false} otherwise
      */
-    default public boolean isRetracted() {
+    default boolean isRetracted() {
         return getPosition() == Position.RETRACTED;
     }
 
@@ -70,7 +70,7 @@ public interface SolenoidWithPosition extends Solenoid {
      * @param positionSupplier the function that returns the position; may not be null
      * @return the {@link SolenoidWithPosition} instance; never null
      */
-    public static SolenoidWithPosition create(Solenoid solenoid, Supplier<Position> positionSupplier ) {
+    static SolenoidWithPosition create(Solenoid solenoid, Supplier<Position> positionSupplier) {
         return new SolenoidWithPosition() {
             private Position position = positionSupplier.get();
 
@@ -113,7 +113,7 @@ public interface SolenoidWithPosition extends Solenoid {
      * @param extendSwitch the switch that determines if the solenoid is extended; may not be null
      * @return the {@link SolenoidWithPosition} instance; never null
      */
-    public static SolenoidWithPosition create(Solenoid solenoid, Switch retractSwitch, Switch extendSwitch ) {
+    static SolenoidWithPosition create(Solenoid solenoid, Switch retractSwitch, Switch extendSwitch) {
         return create(solenoid,()->{
             if ( extendSwitch.isTriggered() ) {
                 if ( retractSwitch.isTriggered() ) {

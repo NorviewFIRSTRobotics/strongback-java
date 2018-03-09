@@ -30,7 +30,7 @@ public interface ThreeAxisAccelerometer extends TwoAxisAccelerometer {
      * Get the Z-axis accelerometer.
      * @return the accelerometer for the Z-axis; never null
      */
-    public Accelerometer getZDirection();
+    Accelerometer getZDirection();
 
     /**
      * Get the accelerometer for the axis with the given index, where 0 is the X-axis, 1 is the Y-axis, and 2 is the Z-axis.
@@ -38,7 +38,7 @@ public interface ThreeAxisAccelerometer extends TwoAxisAccelerometer {
      * @throws IllegalArgumentException if {@code axis} is invalid
      */
     @Override
-    default public Accelerometer getDirection(int axis) {
+    default Accelerometer getDirection(int axis) {
         if (axis == 0) return getXDirection();
         if (axis == 1) return getYDirection();
         if (axis == 2) return getZDirection();
@@ -50,7 +50,7 @@ public interface ThreeAxisAccelerometer extends TwoAxisAccelerometer {
      * @return the acceleration values for 3 axes; never null
      */
     @Override
-    default public ThreeAxisAcceleration getAcceleration() {
+    default ThreeAxisAcceleration getAcceleration() {
         return new ThreeAxisAcceleration(getXDirection().getAcceleration(), getYDirection().getAcceleration(), getZDirection()
                 .getAcceleration());
     }
@@ -62,7 +62,7 @@ public interface ThreeAxisAccelerometer extends TwoAxisAccelerometer {
      * @param zAxis the accelerometer for the Z-axis; may not be null
      * @return the 3-axis accelerometer; never null
      */
-    public static ThreeAxisAccelerometer create(Accelerometer xAxis, Accelerometer yAxis, Accelerometer zAxis) {
+    static ThreeAxisAccelerometer create(Accelerometer xAxis, Accelerometer yAxis, Accelerometer zAxis) {
         return new ThreeAxisAccelerometer() {
 
             @Override
@@ -88,7 +88,7 @@ public interface ThreeAxisAccelerometer extends TwoAxisAccelerometer {
      * @param zAxis the accelerometer for the Z-axis; may not be null
      * @return the 3-axis accelerometer; never null
      */
-    public static ThreeAxisAccelerometer create(TwoAxisAccelerometer xAndY, Accelerometer zAxis) {
+    static ThreeAxisAccelerometer create(TwoAxisAccelerometer xAndY, Accelerometer zAxis) {
         return new ThreeAxisAccelerometer() {
 
             @Override

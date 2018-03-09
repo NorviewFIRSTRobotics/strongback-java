@@ -42,10 +42,10 @@ import org.strongback.components.VoltageSensor;
 @Immutable
 class HardwareTalonSRX implements TalonSRX {
 
-    protected static interface InputSensor extends Gyroscope {
-        public double rawPositionForAngleInDegrees(double angle);
+    protected interface InputSensor extends Gyroscope {
+        double rawPositionForAngleInDegrees(double angle);
 
-        public double angleInDegreesFromRawPosition(double position);
+        double angleInDegreesFromRawPosition(double position);
     }
 
     protected static final InputSensor NO_OP_SENSOR = new InputSensor() {
@@ -291,7 +291,7 @@ class HardwareTalonSRX implements TalonSRX {
 
     @Override
     public TalonSRX setFeedbackDevice(FeedbackDevice device) {
-        //TODO
+        //https://github.com/NorviewFIRSTRobotics/RobotBase2018/issues/1TODO
 //        talon.setFeedbackDevice(CANTalon.FeedbackDevice.valueOf(device.value()));
         switch (device) {
             case ANALOG_POTENTIOMETER:

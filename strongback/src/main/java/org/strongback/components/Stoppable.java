@@ -25,5 +25,5 @@ public interface Stoppable {
     /**
      * Stops this component.
      */
-    public void stop();
+    void stop();
 }

@@ -41,7 +41,7 @@ public final class ExecutableTimer implements Executable {
 
     /**
      * Measure the timing of the {@link Executor} and print the histogram of timing results to {@link System#out}. The resulting
-     * timer will be {@link Executor#register(Executable) registered} with the Executor, and upon completion will automatically
+     * timer will be {@link Executor#register(Executable,Executor.Priority) registered} with the Executor, and upon completion will automatically
      * unregister itself.
      * <p>
      * This method can be used to print a histogram of {@link Strongback#executor() Strongback's executor}. The following

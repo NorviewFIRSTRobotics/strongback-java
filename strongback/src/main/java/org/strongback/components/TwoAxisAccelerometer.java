@@ -31,14 +31,14 @@ public interface TwoAxisAccelerometer {
      *
      * @return the accelerometer for the X-axis; never null
      */
-    public Accelerometer getXDirection();
+    Accelerometer getXDirection();
 
     /**
      * Get the Y-axis accelerometer.
      *
      * @return the accelerometer for the Y-axis; never null
      */
-    public Accelerometer getYDirection();
+    Accelerometer getYDirection();
 
     /**
      * Get the accelerometer for the axis with the given index, where 0 is the X-axis and 1 is the Y-axis.
@@ -47,7 +47,7 @@ public interface TwoAxisAccelerometer {
      * @return the accelerometer; never null
      * @throws IllegalArgumentException if {@code axis} is invalid
      */
-    default public Accelerometer getDirection(int axis) {
+    default Accelerometer getDirection(int axis) {
         if (axis == 0) return getXDirection();
         if (axis == 1) return getYDirection();
         throw new IllegalArgumentException("The axis was '" + axis + "', but only '0' or '1' is accepted");
@@ -58,7 +58,7 @@ public interface TwoAxisAccelerometer {
      *
      * @return the acceleration values for 2 axes; never null
      */
-    default public TwoAxisAcceleration getAcceleration() {
+    default TwoAxisAcceleration getAcceleration() {
         return new TwoAxisAcceleration(getXDirection().getAcceleration(), getYDirection().getAcceleration());
     }
 
@@ -69,7 +69,7 @@ public interface TwoAxisAccelerometer {
      * @param yAxis the accelerometer for the Y-axis; may not be null
      * @return the 2-axis accelerometer; never null
      */
-    public static TwoAxisAccelerometer create(Accelerometer xAxis, Accelerometer yAxis) {
+    static TwoAxisAccelerometer create(Accelerometer xAxis, Accelerometer yAxis) {
         return new TwoAxisAccelerometer() {
 
             @Override

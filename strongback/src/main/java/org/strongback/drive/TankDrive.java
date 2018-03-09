@@ -35,7 +35,7 @@ import org.strongback.util.Values;
  */
 public class TankDrive implements Requirable {
 
-    public static enum CheesyAlgorithm {
+    public enum CheesyAlgorithm {
         SIMPLE, INERTIA
     }
 
@@ -315,7 +315,7 @@ public class TankDrive implements Requirable {
         double negInertia = wheel - oldWheel;
         oldWheel = wheel;
 
-        double wheelNonLinearity = 0.6;
+        double wheelNonLinearity;
         final boolean isHighGear = highGear.isOn();
         if (isHighGear) {
             wheelNonLinearity = 0.6;
@@ -383,13 +383,7 @@ public class TankDrive implements Requirable {
         } else {
             overPower = 0.0;
             angularPower = Math.abs(throttle) * wheel * sensitivity - quickStopAccumulator;
-            if (quickStopAccumulator > 1) {
-                quickStopAccumulator -= 1;
-            } else if (quickStopAccumulator < -1) {
-                quickStopAccumulator += 1;
-            } else {
-                quickStopAccumulator = 0.0;
-            }
+            accumulateQuickStop();
         }
 
         rightPwm = leftPwm = linearPower;
@@ -446,13 +440,7 @@ public class TankDrive implements Requirable {
         } else {
             overPower = 0.0;
             angularPower = Math.abs(throttle) * wheel * SENSITIVITY_TURN - quickStopAccumulator;
-            if (quickStopAccumulator > 1) {
-                quickStopAccumulator -= 1;
-            } else if (quickStopAccumulator < -1) {
-                quickStopAccumulator += 1;
-            } else {
-                quickStopAccumulator = 0.0;
-            }
+            accumulateQuickStop();
         }
 
         double rightPwm = throttle - angularPower;
@@ -472,6 +460,16 @@ public class TankDrive implements Requirable {
         }
         left.setSpeed(leftPwm);
         right.setSpeed(rightPwm);
+    }
+
+    private void accumulateQuickStop() {
+        if (quickStopAccumulator > 1) {
+            quickStopAccumulator -= 1;
+        } else if (quickStopAccumulator < -1) {
+            quickStopAccumulator += 1;
+        } else {
+            quickStopAccumulator = 0.0;
+        }
     }
 
 }

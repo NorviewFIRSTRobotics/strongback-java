@@ -36,5 +36,5 @@ public interface DoubleToDoubleFunction {
      * @param value the function argument
      * @return the function result
      */
-    public double applyAsDouble(double value);
+    double applyAsDouble(double value);
 }

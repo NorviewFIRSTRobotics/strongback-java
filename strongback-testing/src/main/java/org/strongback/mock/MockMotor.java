@@ -26,7 +26,7 @@ import org.strongback.components.Motor;
  */
 public class MockMotor implements Motor {
 
-    private volatile double speed = 0;
+    private volatile double speed;
 
     MockMotor(double speed) {
         this.speed = speed;

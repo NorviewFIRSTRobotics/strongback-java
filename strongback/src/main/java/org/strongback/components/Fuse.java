@@ -32,21 +32,21 @@ public interface Fuse extends Switch {
      *
      * @return this object to allow for chaining methods together; never null
      */
-    public Fuse trigger();
+    Fuse trigger();
 
     /**
      * Reset the fuse so it is no longer triggered.
      *
      * @return this object to allow for chaining methods together; never null
      */
-    public Fuse reset();
+    Fuse reset();
 
     /**
      * Create a simple fuse that is manually {@link #trigger() triggered} and manually {@link #reset()}.
      *
      * @return the fuse; never null
      */
-    public static Fuse create() {
+    static Fuse create() {
         return new Fuse() {
             private boolean triggered = false;
 
@@ -80,7 +80,7 @@ public interface Fuse extends Switch {
      * @param whenTriggered the function that is to be called when the fuse is triggered; may be null
      * @return the fuse; never null
      */
-    public static Fuse instantaneous( Runnable whenTriggered ) {
+    static Fuse instantaneous(Runnable whenTriggered) {
         return new Fuse() {
 
             @Override
@@ -120,7 +120,7 @@ public interface Fuse extends Switch {
      * @param clock the clock that the fuse should use; if null, the system clock will be used
      * @return the auto-resetting fuse; never null
      */
-    public static Fuse autoResetting(long delay, TimeUnit unit, Clock clock) {
+    static Fuse autoResetting(long delay, TimeUnit unit, Clock clock) {
         return autoResetting(delay, unit, clock, null);
     }
 
@@ -133,7 +133,7 @@ public interface Fuse extends Switch {
      * @param whenTriggered the function that is to be called when the fuse is triggered; may be null
      * @return the auto-resetting fuse; never null
      */
-    public static Fuse autoResetting(long delay, TimeUnit unit, Clock clock, Runnable whenTriggered) {
+    static Fuse autoResetting(long delay, TimeUnit unit, Clock clock, Runnable whenTriggered) {
         Clock theClock = clock != null ? clock : Clock.system();
         if (unit == null) throw new IllegalArgumentException("The time unit may not be null");
         long delayTimeInMillis = unit.toMillis(delay);

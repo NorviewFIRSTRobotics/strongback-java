@@ -46,7 +46,7 @@ public interface EventRecorder extends Executable {
      * @param eventType the type of event; may not be null
      * @param value the event details as a string value; may be null
      */
-    public void record(String eventType, String value);
+    void record(String eventType, String value);
 
     /**
      * Record an event with the given identifier and event information.
@@ -54,7 +54,7 @@ public interface EventRecorder extends Executable {
      * @param eventType the type of event; may not be null
      * @param value the event detail as an integer value; may be null
      */
-    public void record(String eventType, int value);
+    void record(String eventType, int value);
 
     /**
      * Record an event with the given identifier and event information.
@@ -62,7 +62,7 @@ public interface EventRecorder extends Executable {
      * @param eventType the type of event; may not be null
      * @param value the event detail as an integer value; may be null
      */
-    default public void record(String eventType, boolean value) {
+    default void record(String eventType, boolean value) {
         record(eventType, value ? 1 : 0);
     }
 
@@ -71,7 +71,7 @@ public interface EventRecorder extends Executable {
      *
      * @return the no-operation event recorder; never null
      */
-    public static EventRecorder noOp() {
+    static EventRecorder noOp() {
         return new EventRecorder() {
 
             @Override

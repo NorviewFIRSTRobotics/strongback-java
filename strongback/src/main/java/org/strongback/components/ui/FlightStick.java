@@ -26,21 +26,21 @@ import org.strongback.function.IntToIntFunction;
  * A type of input device consisting of a joystick with twist and throttle and multiple buttons.
  */
 public interface FlightStick extends InputDevice {
-    public ContinuousRange getPitch();
+    ContinuousRange getPitch();
 
-    public ContinuousRange getYaw();
+    ContinuousRange getYaw();
 
-    public ContinuousRange getRoll();
+    ContinuousRange getRoll();
 
-    public ContinuousRange getThrottle();
+    ContinuousRange getThrottle();
 
-    public Switch getTrigger();
+    Switch getTrigger();
 
-    public Switch getThumb();
+    Switch getThumb();
 
-    public static FlightStick create(IntToDoubleFunction axisToValue, IntToBooleanFunction buttonNumberToSwitch,
-            IntToIntFunction padToValue, ContinuousRange pitch, ContinuousRange yaw, ContinuousRange roll,
-            ContinuousRange throttle, Switch trigger, Switch thumb) {
+    static FlightStick create(IntToDoubleFunction axisToValue, IntToBooleanFunction buttonNumberToSwitch,
+                              IntToIntFunction padToValue, ContinuousRange pitch, ContinuousRange yaw, ContinuousRange roll,
+                              ContinuousRange throttle, Switch trigger, Switch thumb) {
         return new FlightStick() {
             @Override
             public ContinuousRange getAxis(int axis) {

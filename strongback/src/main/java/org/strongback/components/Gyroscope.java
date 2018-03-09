@@ -35,10 +35,10 @@ public interface Gyroscope extends Compass {
      *
      * @return the angular velocity of this {@link Gyroscope}
      */
-    public double getRate();
+    double getRate();
 
     @Override
-    default public Gyroscope zero() {
+    default Gyroscope zero() {
         return this;
     }
 
@@ -49,7 +49,7 @@ public interface Gyroscope extends Compass {
      * @param rateSupplier the function that returns the angular acceleration; may not be null
      * @return the angle sensor
      */
-    public static Gyroscope create(DoubleSupplier angleSupplier, DoubleSupplier rateSupplier) {
+    static Gyroscope create(DoubleSupplier angleSupplier, DoubleSupplier rateSupplier) {
         return new Gyroscope() {
             private volatile double zero = 0;
 

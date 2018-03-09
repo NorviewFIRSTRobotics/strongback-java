@@ -27,6 +27,7 @@ import org.strongback.annotation.ThreadSafe;
  * @author Randall Hauch
  *
  */
+@SuppressWarnings("Duplicates")
 @ThreadSafe
 final class FileEventWriter implements EventWriter {
 
