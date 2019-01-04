@@ -1,5 +1,5 @@
 
-This is an unofficail fork of Strongback that merges most of the current PRs on the original project and is working to add what Team1793 needs to continue using it.  
+This is an unofficial fork of Strongback that merges most of the current PRs on the original project and is working to add what Team1793 needs to continue using it.  
 
 
 

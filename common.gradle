@@ -1,0 +1,20 @@
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'java'
+apply plugin: "edu.wpi.first.GradleRIO"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+group = "org.strongback"
+version = "2019.01.03"
+
+dependencies {
+    compile 'junit:junit:4.12'
+    testCompile 'org.easytesting:fest-assert:1.4'
+}

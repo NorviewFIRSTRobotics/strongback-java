@@ -16,7 +16,8 @@
 
 package org.strongback.control;
 
-import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
+import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
 import org.strongback.*;
@@ -82,7 +83,7 @@ import java.util.function.Supplier;
  */
 @ThreadSafe
 @Deprecated
-public class SoftwarePIDController implements LiveWindowSendable, PIDController {
+public class SoftwarePIDController implements Sendable, PIDController {
 
     public static int DEFAULT_PROFILE = 0;
 
@@ -740,17 +741,27 @@ public class SoftwarePIDController implements LiveWindowSendable, PIDController 
 //        return table;
 //    }
 
+
     @Override
-    public void startLiveWindowMode() {
-        disable();
+    public String getName() {
+        return "";
     }
 
     @Override
-    public void stopLiveWindowMode() {
+    public void setName(String name) {
     }
 
     @Override
-    public void updateTable() {
+    public String getSubsystem() {
+        return "";
     }
 
+    @Override
+    public void setSubsystem(String subsystem) {
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        /*builder.setUpdateTable(this::updateTable);*/
+    }
 }

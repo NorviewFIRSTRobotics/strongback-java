@@ -1,30 +1,16 @@
-plugins {
-    id "maven"
-    id "maven-publish"
-    id "jaci.openrio.gradle.GradleRIO" version "2018.01.20"
+
+repositories {
+    maven {
+        url 'http://devsite.ctr-electronics.com/maven/release/'
+    }
 }
 
 dependencies {
-    compile wpilib()
-    compile ctre()
-    compile navx()
-    compile openrio.powerup.matchData()
-    compile('io.dropwizard.metrics:metrics-core:3.1.0')
-    compile('junit:junit:4.11')
-}
-
-task sourceJar(type: Jar) {
-    from sourceSets.main.allJava
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-
-            artifact sourceJar {
-                classifier "sources"
-            }
-        }
-    }
+    compile wpi.deps.wpilib()
+    compile wpi.deps.vendor.java()
+    compile 'com.ctre.phoenix:api-java:5.12.0'
+    compile 'io.dropwizard.metrics:metrics-core:3.1.0'
+    nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
+    nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
+    testCompile 'junit:junit:4.12'
 }

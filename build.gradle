@@ -1,3 +1,14 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "edu.wpi.first:GradleRIO:2019.1.1"
+    }
+}
+
 plugins {
     id "maven"
     id "maven-publish"
@@ -8,32 +19,8 @@ ext {
 }
 
 subprojects {
-    apply plugin: 'maven'
-    apply plugin: 'java'
+ 
 
-
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-
-    repositories {
-        mavenCentral()
-        mavenLocal()
-    }
-
-    group = "org.strongback"
-    version = "2018.3.08"
-
-    dependencies {
-        testCompile('junit:junit:4.12')
-        testCompile('org.easytesting:fest-assert:1.4')
-    }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.10'
-}
-
-allprojects {
-    publishToMavenLocal
+    apply from: rootProject.file('common.gradle')
 }
 
